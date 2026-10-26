@@ -9,37 +9,55 @@ REDIRECTS="https://sakselson-a11y.github.io/hundappen/**,http://localhost:5173/h
 SUBJECT="Din kod till Hundappen"
 API="https://api.supabase.com/v1/projects/$SUPABASE_PROJECT_REF/config/auth"
 
-body=$(python3 - "$SITE_URL" "$REDIRECTS" "$SUBJECT" <<'PY'
-import json, sys
-site, redirects, subject = sys.argv[1:4]
-template = open('supabase/templates/login-code.html', encoding='utf-8').read()
-print(json.dumps({
-    'site_url': site,
-    'uri_allow_list': redirects,
-    'mailer_subjects_magic_link': subject,
-    'mailer_templates_magic_link_content': template,
-    'mailer_subjects_confirmation': subject,
-    'mailer_templates_confirmation_content': template,
-}))
-PY
-)
-
-# Anropar API:t och visar Supabases felmeddelande om något går fel.
+# Anropar API:t. Vid fel skrivs Supabases svar ut och funktionen returnerar 1.
 call() {
   local out status
   out=$(mktemp)
   status=$(curl -sS -o "$out" -w '%{http_code}' -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$@")
   if [ "$status" -ge 400 ]; then
-    echo "::error::Supabase svarade $status: $(head -c 500 "$out" | tr '\n' ' ')" >&2
-    exit 1
+    LAST_ERROR="Supabase svarade $status: $(head -c 500 "$out" | tr '\n' ' ')"
+    return 1
   fi
   cat "$out"
 }
 
-call -X PATCH "$API" -H "Content-Type: application/json" -d "$body" > /dev/null
+json() {
+  python3 - "$SITE_URL" "$REDIRECTS" "$SUBJECT" "$1" <<'PY'
+import json, sys
+site, redirects, subject, part = sys.argv[1:5]
+if part == 'urls':
+    print(json.dumps({'site_url': site, 'uri_allow_list': redirects}))
+else:
+    template = open('supabase/templates/login-code.html', encoding='utf-8').read()
+    print(json.dumps({
+        'mailer_subjects_magic_link': subject,
+        'mailer_templates_magic_link_content': template,
+        'mailer_subjects_confirmation': subject,
+        'mailer_templates_confirmation_content': template,
+    }))
+PY
+}
 
-# Kontrollera att inställningarna faktiskt sparades.
-call "$API" | python3 -c '
+# 1. Adresser (fungerar alltid).
+if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$(json urls)" > /dev/null; then
+  echo "::error::$LAST_ERROR" >&2
+  exit 1
+fi
+echo "Site URL och Redirect URLs uppdaterade."
+
+# 2. Mejlmallar med kod. Kräver egen SMTP på gratisnivån.
+if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$(json templates)" > /dev/null; then
+  if [[ "$LAST_ERROR" == *"custom SMTP"* ]]; then
+    echo "::warning::Mejlmallen med kod kunde inte sparas eftersom ingen egen SMTP-tjänst är inkopplad. Den sparas automatiskt vid nästa körning när SMTP är inställt."
+    exit 0
+  fi
+  echo "::error::$LAST_ERROR" >&2
+  exit 1
+fi
+
+# 3. Kontrollera att allt faktiskt sparades.
+config=$(call "$API") || { echo "::error::$LAST_ERROR" >&2; exit 1; }
+echo "$config" | python3 -c '
 import json, sys
 c = json.load(sys.stdin)
 ok = True
@@ -48,6 +66,6 @@ for key in ("mailer_templates_magic_link_content", "mailer_templates_confirmatio
         print(f"::error::{key} saknar koden {{{{ .Token }}}}"); ok = False
 if c.get("site_url") != sys.argv[1]:
     print(f"::error::site_url är {c.get(\"site_url\")}"); ok = False
-print("Inloggningsinställningar uppdaterade." if ok else "Något sparades inte.")
+print("Mejlmallar med kod uppdaterade." if ok else "Något sparades inte.")
 sys.exit(0 if ok else 1)
 ' "$SITE_URL"
