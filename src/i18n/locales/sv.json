@@ -3,6 +3,41 @@
     "name": "Hundappen",
     "tagline": "Rastning, mat och schema för hela familjen"
   },
+  "common": {
+    "loading": "Laddar …",
+    "wait": "Vänta …",
+    "continue": "Fortsätt",
+    "signOut": "Logga ut"
+  },
+  "login": {
+    "title": "Logga in",
+    "intro": "Skriv din e-postadress så skickar vi en kod. Du behöver inget lösenord.",
+    "emailLabel": "E-postadress",
+    "sendCode": "Skicka kod",
+    "codeTitle": "Skriv in koden",
+    "codeSent": "Vi har skickat en kod till {{email}}. Den kan ta en minut att komma fram – kolla även skräpposten.",
+    "codeLabel": "Kod från mejlet",
+    "signIn": "Logga in",
+    "resend": "Skicka ny kod",
+    "changeEmail": "Byt e-postadress"
+  },
+  "name": {
+    "title": "Vad heter du?",
+    "intro": "Namnet visas för de andra i familjen, till exempel ”Ester har rastat Tucci”.",
+    "label": "Förnamn"
+  },
+  "home": {
+    "greeting": "Hej {{name}}!",
+    "signedInAs": "Inloggad som {{email}}",
+    "comingSoon": "Här kommer din hund och översikten att synas."
+  },
+  "errors": {
+    "generic": "Något gick fel. Försök igen.",
+    "network": "Ingen anslutning. Kontrollera internet och försök igen.",
+    "rateLimit": "För många försök. Vänta en stund och försök igen.",
+    "invalidCode": "Koden stämmer inte eller har gått ut. Försök igen eller skicka en ny kod.",
+    "invalidEmail": "E-postadressen ser inte rätt ut."
+  },
   "status": {
     "title": "Status",
     "installed": "Installerad på hemskärmen",

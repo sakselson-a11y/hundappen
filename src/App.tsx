@@ -1,39 +1,30 @@
-import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { isStandalone, supportsPush } from './pwa.ts'
+import { AuthProvider, useAuth } from './auth/AuthProvider.tsx'
+import LoginScreen from './screens/LoginScreen.tsx'
+import NameScreen from './screens/NameScreen.tsx'
+import HomeScreen from './screens/HomeScreen.tsx'
+
+function Content() {
+  const { t } = useTranslation()
+  const { loading, session, profile } = useAuth()
+
+  if (loading) return <p className="muted center">{t('common.loading')}</p>
+  if (!session) return <LoginScreen />
+  if (!profile?.display_name) return <NameScreen />
+  return <HomeScreen />
+}
 
 export default function App() {
   const { t } = useTranslation()
-  const [swReady, setSwReady] = useState(false)
-  const standalone = isStandalone()
-
-  useEffect(() => {
-    if (!('serviceWorker' in navigator)) return
-    navigator.serviceWorker.ready.then(() => setSwReady(true))
-  }, [])
-
   return (
     <main className="page">
       <header className="hero">
-        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={72} height={72} />
+        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={56} height={56} />
         <h1>{t('app.name')}</h1>
-        <p>{t('app.tagline')}</p>
       </header>
-
-      <section className="card">
-        <h2>{t('status.title')}</h2>
-        <dl className="status">
-          <dt>{standalone ? t('status.installed') : t('status.notInstalled')}</dt>
-          <dd>{standalone ? '✅' : '⚠️'}</dd>
-          <dt>{t('status.serviceWorker')}</dt>
-          <dd>{swReady ? t('status.ready') : t('status.notReady')}</dd>
-          <dt>{t('status.pushSupport')}</dt>
-          <dd>{supportsPush() ? t('status.yes') : t('status.no')}</dd>
-          <dt>{t('status.version')}</dt>
-          <dd>{__APP_VERSION__}</dd>
-        </dl>
-        {!standalone && <p className="hint">{t('status.noInstallHint')}</p>}
-      </section>
+      <AuthProvider>
+        <Content />
+      </AuthProvider>
     </main>
   )
 }

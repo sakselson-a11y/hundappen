@@ -1,0 +1,47 @@
+name: Uppdatera Supabase
+
+# Kör databasmigreringar (och senare Edge Functions) mot Supabase-projektet
+# när något under supabase/ ändras på main.
+on:
+  push:
+    branches: [main]
+    paths: ['supabase/**']
+  workflow_dispatch:
+
+concurrency:
+  group: supabase
+  cancel-in-progress: false
+
+env:
+  SUPABASE_PROJECT_REF: glkphbxspzhwhdveiori
+  SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+  SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Testa migreringar och RLS lokalt
+        run: |
+          sudo systemctl start postgresql
+          sudo -u postgres createuser --superuser runner
+          PGHOST=/var/run/postgresql PGUSER=runner PGDATABASE=postgres scripts/test-db.sh
+
+      - name: Kontrollera hemligheter
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then
+            echo "::error::Lägg in SUPABASE_ACCESS_TOKEN och SUPABASE_DB_PASSWORD under Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Koppla till projektet
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Kör databasmigreringar
+        run: supabase db push --yes
