@@ -31,6 +31,13 @@ export async function uploadDogPhoto(householdId: string, dogId: string, image: 
   return path
 }
 
+export async function uploadEventPhoto(householdId: string, eventId: string, image: Blob): Promise<string> {
+  const path = `${householdId}/events/${eventId}.jpg`
+  const { error } = await supabase.storage.from(BUCKET).upload(path, image, { contentType: 'image/jpeg', upsert: true })
+  if (error) throw error
+  return path
+}
+
 export async function deleteDogPhoto(path: string): Promise<void> {
   await supabase.storage.from(BUCKET).remove([path])
 }

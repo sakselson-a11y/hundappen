@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { supabase } from '../lib/supabase.ts'
 import { useAuth } from '../auth/AuthProvider.tsx'
-import type { Dog, Household, MemberRole } from '../lib/types.ts'
+import type { Dog, Household, Member, MemberRole } from '../lib/types.ts'
 
 interface HouseholdState {
   loading: boolean
@@ -9,6 +9,8 @@ interface HouseholdState {
   household: Household | null
   role: MemberRole | null
   dogs: Dog[]
+  members: Member[]
+  memberName: (userId: string | null) => string | null
   reload: () => Promise<void>
 }
 
@@ -22,6 +24,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
   const [household, setHousehold] = useState<Household | null>(null)
   const [role, setRole] = useState<MemberRole | null>(null)
   const [dogs, setDogs] = useState<Dog[]>([])
+  const [members, setMembers] = useState<Member[]>([])
 
   const reload = useCallback(async () => {
     if (!userId) return
@@ -44,16 +47,25 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     setRole((membership?.role as MemberRole) ?? null)
 
     if (hh) {
-      const { data: dogRows, error: dogError } = await supabase
-        .from('dogs')
-        .select('*')
-        .eq('household_id', hh.id)
-        .is('archived_at', null)
-        .order('created_at')
-      if (dogError) setError(true)
-      setDogs((dogRows ?? []) as Dog[])
+      const [dogResult, memberResult] = await Promise.all([
+        supabase.from('dogs').select('*').eq('household_id', hh.id).is('archived_at', null).order('created_at'),
+        supabase
+          .from('household_members')
+          .select('user_id, role, profile:profiles(display_name)')
+          .eq('household_id', hh.id)
+          .order('joined_at'),
+      ])
+      if (dogResult.error || memberResult.error) setError(true)
+      setDogs((dogResult.data ?? []) as Dog[])
+      const rows = (memberResult.data ?? []) as unknown as {
+        user_id: string
+        role: MemberRole
+        profile: { display_name: string | null } | null
+      }[]
+      setMembers(rows.map((m) => ({ user_id: m.user_id, role: m.role, display_name: m.profile?.display_name ?? null })))
     } else {
       setDogs([])
+      setMembers([])
     }
     setLoading(false)
   }, [userId])
@@ -63,8 +75,13 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     reload()
   }, [reload])
 
+  const memberName = useCallback(
+    (id: string | null) => members.find((m) => m.user_id === id)?.display_name ?? null,
+    [members],
+  )
+
   return (
-    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, reload }}>
+    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, members, memberName, reload }}>
       {children}
     </HouseholdContext.Provider>
   )

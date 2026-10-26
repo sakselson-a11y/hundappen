@@ -4,13 +4,7 @@ import { supabase } from '../lib/supabase.ts'
 import { formatCode, inviteLink } from '../lib/invite.ts'
 import { useAuth } from '../auth/AuthProvider.tsx'
 import { useHousehold } from '../household/HouseholdProvider.tsx'
-import type { MemberRole } from '../lib/types.ts'
-
-interface Member {
-  user_id: string
-  role: MemberRole
-  profile: { display_name: string | null } | null
-}
+import type { Member } from '../lib/types.ts'
 
 interface Invite {
   code: string
@@ -20,8 +14,7 @@ interface Invite {
 export default function FamilyCard({ dogName }: { dogName: string }) {
   const { t, i18n } = useTranslation()
   const { session, profile } = useAuth()
-  const { household, role } = useHousehold()
-  const [members, setMembers] = useState<Member[]>([])
+  const { household, role, members, reload } = useHousehold()
   const [invite, setInvite] = useState<Invite | null>(null)
   const [busy, setBusy] = useState(false)
   const [copied, setCopied] = useState(false)
@@ -31,12 +24,6 @@ export default function FamilyCard({ dogName }: { dogName: string }) {
 
   const load = useCallback(async () => {
     if (!householdId) return
-    const { data } = await supabase
-      .from('household_members')
-      .select('user_id, role, profile:profiles(display_name)')
-      .eq('household_id', householdId)
-      .order('joined_at')
-    setMembers((data ?? []) as unknown as Member[])
     if (isOwner) {
       const { data: inv } = await supabase
         .from('household_invites')
@@ -92,10 +79,10 @@ export default function FamilyCard({ dogName }: { dogName: string }) {
 
   async function remove(member: Member) {
     if (!householdId) return
-    const name = member.profile?.display_name ?? ''
+    const name = member.display_name ?? ''
     if (!window.confirm(t('family.confirmRemove', { name, dog: dogName }))) return
     await supabase.from('household_members').delete().eq('household_id', householdId).eq('user_id', member.user_id)
-    await load()
+    await reload()
   }
 
   const expires = invite
@@ -108,9 +95,9 @@ export default function FamilyCard({ dogName }: { dogName: string }) {
       <ul className="members">
         {members.map((m) => (
           <li key={m.user_id}>
-            <span className="avatar">{(m.profile?.display_name ?? '?').slice(0, 1).toUpperCase()}</span>
+            <span className="avatar">{(m.display_name ?? '?').slice(0, 1).toUpperCase()}</span>
             <span className="member-name">
-              {m.profile?.display_name ?? t('family.unnamed')}
+              {m.display_name ?? t('family.unnamed')}
               {m.user_id === session?.user.id && <span className="muted"> {t('family.you')}</span>}
             </span>
             {m.role === 'owner' && <span className="tag">{t('family.owner')}</span>}

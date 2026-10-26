@@ -27,3 +27,6 @@ create table storage.objects (
 alter table storage.objects enable row level security;
 grant usage on schema storage to anon, authenticated, service_role;
 grant all on storage.objects, storage.buckets to anon, authenticated, service_role;
+
+-- Realtime
+create publication supabase_realtime;

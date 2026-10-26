@@ -28,3 +28,25 @@ export interface Dog {
   created_at: string
   archived_at: string | null
 }
+
+export interface Member {
+  user_id: string
+  role: MemberRole
+  display_name: string | null
+}
+
+export type EventType = 'walk' | 'meal'
+
+export interface DogEvent {
+  id: string
+  household_id: string
+  dog_id: string
+  type: EventType
+  occurred_at: string
+  logged_by: string | null
+  pee: boolean | null
+  poop: boolean | null
+  note: string | null
+  photo_path: string | null
+  created_at: string
+}

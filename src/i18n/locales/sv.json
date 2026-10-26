@@ -12,7 +12,8 @@
     "cancel": "Avbryt",
     "save": "Spara",
     "edit": "Redigera",
-    "retry": "Försök igen"
+    "retry": "Försök igen",
+    "close": "Stäng"
   },
   "login": {
     "title": "Logga in",
@@ -33,8 +34,7 @@
   },
   "home": {
     "signedInAs": "{{name}} · {{email}}",
-    "account": "Konto",
-    "comingSoon": "Här kommer loggning av rastning och mat, schema och historik."
+    "account": "Konto"
   },
   "errors": {
     "generic": "Något gick fel. Försök igen.",
@@ -112,5 +112,51 @@
     "copied": "Kopierat!",
     "newCode": "Skapa ny kod (den gamla slutar fungera)",
     "createInvite": "Skapa inbjudan"
+  },
+  "tabs": {
+    "overview": "Översikt",
+    "history": "Historik",
+    "family": "Familjen"
+  },
+  "overview": {
+    "logWalk": "Rastning",
+    "logMeal": "Mat",
+    "lastWalk": "Senaste rastning",
+    "lastMeal": "Senaste mat",
+    "never": "Inte loggat än"
+  },
+  "log": {
+    "walkTitle": "Rastning av {{dog}}",
+    "mealTitle": "Mat till {{dog}}",
+    "pee": "Kiss",
+    "poop": "Bajs",
+    "note": "Kommentar",
+    "addPhoto": "Lägg till foto",
+    "now": "Nu",
+    "changeTime": "ändra tid",
+    "when": "När",
+    "futureTime": "Tiden kan inte vara i framtiden.",
+    "photoFailed": "Fotot kunde inte laddas upp. Försök igen eller ta bort fotot."
+  },
+  "history": {
+    "title": "Historik",
+    "empty": "Inget loggat än. Tryck på Rastning eller Mat på översikten.",
+    "walkBy": "Rastad av {{name}}",
+    "mealBy": "Mat av {{name}}",
+    "formerMember": "Tidigare medlem",
+    "delete": "Ta bort",
+    "confirmDelete": "Ta bort den här loggen?",
+    "showPhoto": "Visa foto",
+    "loadMore": "Visa äldre"
+  },
+  "time": {
+    "today": "Idag",
+    "yesterday": "Igår",
+    "justNow": "nyss",
+    "minutesAgo_one": "för {{count}} min sedan",
+    "minutesAgo_other": "för {{count}} min sedan",
+    "hoursAgo_one": "för {{count}} tim sedan",
+    "hoursAgo_other": "för {{count}} tim sedan",
+    "hoursMinutesAgo": "för {{h}} tim {{m}} min sedan"
   }
 }
