@@ -5,6 +5,8 @@ import { resizeImage, uploadDogPhoto } from '../lib/photos.ts'
 import { useHousehold } from '../household/HouseholdProvider.tsx'
 import DogForm, { type DogFormValues } from '../components/DogForm.tsx'
 import type { Dog } from '../lib/types.ts'
+import JoinHouseholdCard from '../components/JoinHouseholdCard.tsx'
+import { getPendingInvite } from '../lib/invite.ts'
 
 export default function CreateDogScreen() {
   const { t } = useTranslation()
@@ -42,17 +44,32 @@ export default function CreateDogScreen() {
     await reload()
   }
 
+  const form = (
+    <DogForm title={t('createDog.title')} submitLabel={t('createDog.submit')} busy={busy} error={error} onSubmit={create} />
+  )
+
+  // Har man öppnat en inbjudningslänk visas "gå med" först.
+  if (getPendingInvite()) {
+    return (
+      <>
+        <JoinHouseholdCard />
+        <section className="card">
+          <h2>{t('createDog.ownDogTitle')}</h2>
+          <p className="muted">{t('createDog.ownDogText')}</p>
+        </section>
+        {form}
+      </>
+    )
+  }
+
   return (
     <>
       <section className="card">
         <h2>{t('createDog.welcome')}</h2>
         <p className="muted">{t('createDog.intro')}</p>
       </section>
-      <DogForm title={t('createDog.title')} submitLabel={t('createDog.submit')} busy={busy} error={error} onSubmit={create} />
-      <section className="card">
-        <h2>{t('createDog.joinTitle')}</h2>
-        <p className="muted">{t('createDog.joinText')}</p>
-      </section>
+      {form}
+      <JoinHouseholdCard />
     </>
   )
 }

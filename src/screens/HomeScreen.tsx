@@ -6,6 +6,7 @@ import StatusCard from '../components/StatusCard.tsx'
 import DogCard from '../components/DogCard.tsx'
 import CreateDogScreen from './CreateDogScreen.tsx'
 import EditDogScreen from './EditDogScreen.tsx'
+import FamilyCard from '../components/FamilyCard.tsx'
 
 export default function HomeScreen() {
   const { t } = useTranslation()
@@ -35,6 +36,7 @@ export default function HomeScreen() {
       <section className="card">
         <p className="muted">{t('home.comingSoon')}</p>
       </section>
+      {dog && <FamilyCard dogName={dog.name} />}
       <section className="card">
         <h2>{t('home.account')}</h2>
         <p className="muted">{t('home.signedInAs', { name: profile?.display_name, email: session?.user.email })}</p>

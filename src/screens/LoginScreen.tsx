@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.ts'
 import { authErrorMessage } from '../lib/errors.ts'
+import InviteBanner from '../components/InviteBanner.tsx'
 
 type Step = 'email' | 'code'
 
@@ -87,25 +88,28 @@ export default function LoginScreen() {
   }
 
   return (
-    <form className="card form" onSubmit={sendCode}>
-      <h2>{t('login.title')}</h2>
-      <p className="muted">{t('login.intro')}</p>
-      <label>
-        <span>{t('login.emailLabel')}</span>
-        <input
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          autoCapitalize="none"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      {error && <p className="error">{error}</p>}
-      <button className="primary" disabled={busy}>
-        {busy ? t('common.wait') : t('login.sendCode')}
-      </button>
-    </form>
+    <>
+      <InviteBanner />
+      <form className="card form" onSubmit={sendCode}>
+        <h2>{t('login.title')}</h2>
+        <p className="muted">{t('login.intro')}</p>
+        <label>
+          <span>{t('login.emailLabel')}</span>
+          <input
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            autoCapitalize="none"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        {error && <p className="error">{error}</p>}
+        <button className="primary" disabled={busy}>
+          {busy ? t('common.wait') : t('login.sendCode')}
+        </button>
+      </form>
+    </>
   )
 }

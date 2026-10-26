@@ -14,7 +14,7 @@
 - household_members: household_id, user_id, role (owner|member), joined_at, notify_events, notify_reminders (all|mine|none)
 - household_invites: id, household_id, code, created_by, expires_at, max_uses, use_count, revoked_at
 - dogs: id, household_id, name, breed, birth_date, photo_path, created_at, archived_at
-- events: id, household_id, dog_id, type (walk|meal), occurred_at, logged_by, pee, poop, note, created_at
+- events: id, household_id, dog_id, type (walk|meal), occurred_at, logged_by, pee, poop, note, photo_path (valfritt foto, tillägg 2026-10-26), created_at
 - schedules: id, household_id, dog_id, type, local_time, days_of_week, responsible_user_id, remind_minutes_before, skip_window_minutes, active, created_by
 - push_subscriptions: id, user_id, endpoint, p256dh, auth, user_agent, created_at, last_success_at, failure_count
 - reminder_log: schedule_id, occurrence_at, status (sent|skipped), processed_at
@@ -25,7 +25,7 @@
 2. Databas + RLS, inloggning med kod, namn
 3. Skapa hund/hushåll med foto
 4. Inbjudningar
-5. Loggning, översikt, historik (realtid)
+5. Loggning (med valfritt foto vid rastning), översikt, historik (realtid)
 6. Hemskärmsguide, notistillstånd, VAPID, testnotis
 7. Notis vid loggning
 8. Schema

@@ -69,8 +69,8 @@
     "intro": "Börja med att lägga till din hund. Sedan kan du bjuda in resten av familjen.",
     "title": "Lägg till hund",
     "submit": "Lägg till",
-    "joinTitle": "Har någon i familjen redan lagt till hunden?",
-    "joinText": "Be dem bjuda in dig, så delar ni samma hund. Inbjudningar kommer snart."
+    "ownDogTitle": "Eller lägg till en egen hund",
+    "ownDogText": "Bara om du vill starta ett eget hushåll i stället."
   },
   "editDog": {
     "title": "Redigera {{name}}"
@@ -83,5 +83,34 @@
     "years_one": "{{count}} år",
     "years_other": "{{count}} år",
     "yearsAndMonths": "{{years}} år och {{months}}"
+  },
+  "invite": {
+    "someone": "Någon",
+    "bannerTitle": "{{inviter}} bjuder in dig till {{dog}}",
+    "bannerTitleGeneric": "Du har fått en inbjudan",
+    "bannerText": "Logga in nedan, så kan du gå med. Din kod:",
+    "joinTitle": "Har du fått en inbjudan?",
+    "joinText": "Skriv in koden du fått av någon i familjen.",
+    "codeLabel": "Inbjudningskod",
+    "previewLine": "{{inviter}} bjuder in dig till {{dog}}.",
+    "join": "Gå med",
+    "joinDog": "Gå med i {{dog}}s familj",
+    "invalid": "Koden fungerar inte. Den kan ha gått ut eller bytts ut – be om en ny.",
+    "shareText": "{{inviter}} bjuder in dig till {{dog}} i Hundappen 🐾\n\nÖppna länken för att gå med:\n{{link}}\n\nKod: {{code}}"
+  },
+  "family": {
+    "title": "Familjen",
+    "you": "(du)",
+    "owner": "Ägare",
+    "unnamed": "Namnlös",
+    "remove": "Ta bort",
+    "confirmRemove": "Ta bort {{name}} från {{dog}}s familj?",
+    "inviteTitle": "Bjud in",
+    "inviteText": "Dela koden med familjen. De öppnar länken eller skriver in koden i appen.",
+    "inviteExpires": "Gäller till {{date}}",
+    "share": "Dela inbjudan",
+    "copied": "Kopierat!",
+    "newCode": "Skapa ny kod (den gamla slutar fungera)",
+    "createInvite": "Skapa inbjudan"
   }
 }

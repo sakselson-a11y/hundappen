@@ -123,3 +123,27 @@ button.link.danger { color: #c0392b; }
 .dog-info h2 { margin: 0; font-size: 22px; }
 .dog-info p { margin: 4px 0 0; }
 .dog-card .link { align-self: flex-start; }
+
+.small { font-size: 14px; }
+.success { color: var(--accent); font-weight: 600; }
+.invite-code {
+  font-size: 28px; font-weight: 700; letter-spacing: 0.12em; text-align: center;
+  font-variant-numeric: tabular-nums; margin: 8px 0;
+}
+.invite-banner { border-color: var(--accent); }
+.invite-banner h2 { margin-bottom: 6px; }
+.invite-banner p { margin: 0; }
+
+.members { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.members li { display: flex; align-items: center; gap: 10px; }
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;
+}
+@media (prefers-color-scheme: dark) { .avatar { color: #10231a; } }
+.member-name { flex: 1; }
+.tag { font-size: 13px; padding: 2px 8px; border-radius: 999px; background: var(--bg); color: var(--muted); }
+
+.invite-box { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+.invite-box h3 { margin: 0; font-size: 16px; }
+.invite-box p { margin: 0; }
