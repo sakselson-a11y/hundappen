@@ -31,3 +31,8 @@
 8. Schema
 9. Påminnelser via pg_cron
 10. Lämna hushåll, radera konto, integritetstext
+
+## Påminnelser (steg 9)
+- pg_cron kör `trigger_reminders()` varje minut; den anropar Edge Function `send-reminders` bara när något väntar.
+- `claim_due_reminders()` lämnar ut varje tillfälle en gång (reminder_log) och hoppar över om samma typ loggats inom fönstret.
+- "Bara min tur": en tid utan ansvarig räknas som allas tur.

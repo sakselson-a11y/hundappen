@@ -37,3 +37,29 @@ export function eventMessage(
 
   return { title, body: parts.join(' · ') }
 }
+
+// Ex: { title: "🦮 Tucci ska ut om 15 minuter", body: "Ester har turen" }
+export function reminderMessage(
+  type: 'walk' | 'meal',
+  dog: string,
+  minutesBefore: number,
+  responsibleName: string | null,
+  recipientIsResponsible: boolean,
+): { title: string; body: string } {
+  const icon = type === 'walk' ? '🦮' : '🍖'
+  const when = minutesBefore > 0 ? `om ${minutesBefore} minuter` : 'nu'
+  const title =
+    minutesBefore > 0
+      ? type === 'walk'
+        ? `${icon} ${dog} ska ut ${when}`
+        : `${icon} ${dog} ska äta ${when}`
+      : type === 'walk'
+        ? `${icon} Dags att gå ut med ${dog}`
+        : `${icon} Dags för ${dog}s mat`
+  const body = recipientIsResponsible
+    ? 'Det är din tur 🐾'
+    : responsibleName
+      ? `${responsibleName} har turen`
+      : 'Vem tar det?'
+  return { title, body }
+}

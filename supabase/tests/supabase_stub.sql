@@ -39,3 +39,12 @@ create function net.http_post(url text, body jsonb default '{}', params jsonb de
 returns bigint language sql as $$ insert into net.calls values (url, body); select 1::bigint $$;
 grant usage on schema net to authenticated, service_role;
 grant all on net.calls to authenticated, service_role;
+
+-- pg_cron (schemalagda jobb sparas i en tabell)
+create schema cron;
+create table cron.jobs (name text primary key, schedule text, command text);
+create function cron.schedule(job_name text, schedule text, command text) returns bigint language sql as $$
+  insert into cron.jobs values (job_name, schedule, command)
+  on conflict (name) do update set schedule = excluded.schedule, command = excluded.command;
+  select 1::bigint
+$$;

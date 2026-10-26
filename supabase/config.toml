@@ -424,3 +424,6 @@ verify_jwt = false
 
 [functions.notify-event]
 verify_jwt = false
+
+[functions.send-reminders]
+verify_jwt = false

@@ -1,5 +1,5 @@
 import { assertEquals } from 'jsr:@std/assert@1'
-import { eventMessage, type EventInfo } from './messages.ts'
+import { eventMessage, reminderMessage, type EventInfo } from './messages.ts'
 
 const base: EventInfo = {
   type: 'walk',
@@ -43,4 +43,25 @@ Deno.test('sommartid räknas rätt', () => {
     'Europe/Stockholm',
   )
   assertEquals(msg.body, 'kl. 07:00')
+})
+
+Deno.test('påminnelse till andra än den ansvariga', () => {
+  assertEquals(reminderMessage('walk', 'Tucci', 15, 'Ester', false), {
+    title: '🦮 Tucci ska ut om 15 minuter',
+    body: 'Ester har turen',
+  })
+})
+
+Deno.test('påminnelse till den ansvariga', () => {
+  assertEquals(reminderMessage('meal', 'Tucci', 10, 'Ester', true), {
+    title: '🍖 Tucci ska äta om 10 minuter',
+    body: 'Det är din tur 🐾',
+  })
+})
+
+Deno.test('påminnelse vid tiden utan ansvarig', () => {
+  assertEquals(reminderMessage('walk', 'Tucci', 0, null, false), {
+    title: '🦮 Dags att gå ut med Tucci',
+    body: 'Vem tar det?',
+  })
 })
