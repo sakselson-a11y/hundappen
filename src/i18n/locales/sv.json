@@ -1,0 +1,19 @@
+{
+  "app": {
+    "name": "Hundappen",
+    "tagline": "Rastning, mat och schema för hela familjen"
+  },
+  "status": {
+    "title": "Status",
+    "installed": "Installerad på hemskärmen",
+    "notInstalled": "Öppnad i webbläsaren",
+    "serviceWorker": "Offlinestöd",
+    "ready": "Aktivt",
+    "notReady": "Inte aktivt",
+    "pushSupport": "Stöd för pushnotiser",
+    "yes": "Ja",
+    "no": "Nej",
+    "noInstallHint": "Pushnotiser fungerar på iPhone först när appen har lagts till på hemskärmen.",
+    "version": "Version"
+  }
+}
