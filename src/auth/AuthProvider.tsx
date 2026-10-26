@@ -36,8 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const reloadProfile = useCallback(async () => {
     if (!userId) return
-    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single()
-    if (!error) setProfile(data as Profile)
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle()
+    if (!error) setProfile(data as Profile | null)
     setLoading(false)
   }, [userId])
 

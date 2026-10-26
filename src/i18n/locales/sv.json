@@ -23,7 +23,7 @@
   },
   "name": {
     "title": "Vad heter du?",
-    "intro": "Namnet visas för de andra i familjen, till exempel ”Ester har rastat Tucci”.",
+    "intro": "Namnet visas för de andra i familjen.",
     "label": "Förnamn"
   },
   "home": {

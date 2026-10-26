@@ -121,5 +121,18 @@ select pg_temp.check('Sven ser Esters händelse', (select count(*) from public.e
 delete from public.events;
 select pg_temp.check('Sven kan inte ta bort Esters händelse', (select count(*) from public.events) = 1);
 
+-- Ny användare utan profilrad (som om kontot skapats före migreringen)
+reset role;
+delete from public.profiles where id = '00000000-0000-0000-0000-00000000000c';
+set role authenticated;
+set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
+insert into public.profiles (id, display_name) values (auth.uid(), 'Annan');
+select pg_temp.check('saknad profil kan skapas av användaren själv', (select count(*) from public.profiles where id = auth.uid()) = 1);
+do $$ begin
+  insert into public.profiles (id) values ('00000000-0000-0000-0000-00000000000b');
+  raise exception 'FEL: kunde skapa profil åt någon annan';
+exception when insufficient_privilege or unique_violation then raise notice 'OK: kan inte skapa profil åt andra';
+end $$;
+
 reset role;
 \echo 'Alla RLS-tester gick igenom.'
