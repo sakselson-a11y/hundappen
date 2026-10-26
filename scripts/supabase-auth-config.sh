@@ -24,13 +24,22 @@ print(json.dumps({
 PY
 )
 
-curl -sS --fail-with-body -X PATCH "$API" \
-  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "$body" > /dev/null
+# Anropar API:t och visar Supabases felmeddelande om något går fel.
+call() {
+  local out status
+  out=$(mktemp)
+  status=$(curl -sS -o "$out" -w '%{http_code}' -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$@")
+  if [ "$status" -ge 400 ]; then
+    echo "::error::Supabase svarade $status: $(head -c 500 "$out" | tr '\n' ' ')"
+    exit 1
+  fi
+  cat "$out"
+}
+
+call -X PATCH "$API" -H "Content-Type: application/json" -d "$body" > /dev/null
 
 # Kontrollera att inställningarna faktiskt sparades.
-curl -sS --fail-with-body "$API" -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" | python3 -c '
+call "$API" | python3 -c '
 import json, sys
 c = json.load(sys.stdin)
 ok = True
