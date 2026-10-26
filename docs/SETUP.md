@@ -9,26 +9,12 @@
 
 Används av arbetsflödet *Uppdatera Supabase* som kör databasmigreringar automatiskt.
 
-## Supabase: Authentication → URL Configuration
+## Inloggningsinställningar och mejlmallar (sköts automatiskt)
 
-- **Site URL:** `https://sakselson-a11y.github.io/hundappen/`
-- **Redirect URLs:** lägg till `https://sakselson-a11y.github.io/hundappen/**` och `http://localhost:5173/hundappen/**`
-
-## Supabase: Authentication → Emails (mallar)
-
-Ändra **både** *Magic link* och *Confirm signup* så att koden syns i mejlet.
-
-**Ämne:** `Din kod till Hundappen`
-
-**Innehåll:**
-
-```html
-<h2>Din kod till Hundappen</h2>
-<p>Skriv in den här koden i appen:</p>
-<p style="font-size:32px;font-weight:bold;letter-spacing:6px">{{ .Token }}</p>
-<p>Koden gäller i en timme. Har du inte bett om den kan du strunta i det här mejlet.</p>
-<p style="color:#666;font-size:13px">Använder du Hundappen i webbläsaren kan du i stället <a href="{{ .ConfirmationURL }}">logga in med den här länken</a>.</p>
-```
+Arbetsflödet *Uppdatera Supabase* sätter Site URL, Redirect URLs och mejlmallarna
+(*Magic link* och *Confirm signup*) via `scripts/supabase-auth-config.sh`.
+Mallen finns i `supabase/templates/login-code.html`. Ändra inte mallarna i Supabase direkt,
+de skrivs över vid nästa körning.
 
 ## E-postutskick (SMTP)
 

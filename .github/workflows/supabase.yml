@@ -1,11 +1,12 @@
 name: Uppdatera Supabase
 
-# Kör databasmigreringar (och senare Edge Functions) mot Supabase-projektet
+# Sätter inloggningsinställningar och kör databasmigreringar (och senare Edge Functions)
+# mot Supabase-projektet
 # när något under supabase/ ändras på main.
 on:
   push:
     branches: [main]
-    paths: ['supabase/**']
+    paths: ['supabase/**', 'scripts/supabase-*', '.github/workflows/supabase.yml']
   workflow_dispatch:
 
 concurrency:
@@ -35,6 +36,9 @@ jobs:
             echo "::error::Lägg in SUPABASE_ACCESS_TOKEN och SUPABASE_DB_PASSWORD under Settings → Secrets and variables → Actions."
             exit 1
           fi
+
+      - name: Uppdatera inloggningsinställningar och mejlmallar
+        run: scripts/supabase-auth-config.sh
 
       - uses: supabase/setup-cli@v1
         with:
