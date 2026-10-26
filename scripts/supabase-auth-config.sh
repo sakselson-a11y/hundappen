@@ -30,7 +30,7 @@ call() {
   out=$(mktemp)
   status=$(curl -sS -o "$out" -w '%{http_code}' -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" "$@")
   if [ "$status" -ge 400 ]; then
-    echo "::error::Supabase svarade $status: $(head -c 500 "$out" | tr '\n' ' ')"
+    echo "::error::Supabase svarade $status: $(head -c 500 "$out" | tr '\n' ' ')" >&2
     exit 1
   fi
   cat "$out"
