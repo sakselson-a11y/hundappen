@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '../lib/supabase.ts'
 import type { Profile } from '../lib/types.ts'
+import { removeThisDevice, syncPushSubscription } from '../lib/push.ts'
 
 interface AuthState {
   loading: boolean
@@ -45,10 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (userId) {
       setLoading(true)
       reloadProfile()
+      syncPushSubscription()
     }
   }, [userId, reloadProfile])
 
   const signOut = useCallback(async () => {
+    await removeThisDevice().catch(() => undefined)
     await supabase.auth.signOut()
   }, [])
 

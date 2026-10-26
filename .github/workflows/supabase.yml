@@ -49,3 +49,22 @@ jobs:
 
       - name: Uppdatera inloggningsinställningar och mejlmallar
         run: scripts/supabase-auth-config.sh
+
+      - name: Skapa VAPID-nycklar för pushnotiser (bara första gången)
+        run: |
+          if supabase secrets list --project-ref "$SUPABASE_PROJECT_REF" | grep -q VAPID_PRIVATE_KEY; then
+            echo "VAPID-nycklar finns redan."
+            exit 0
+          fi
+          keys=$(npx --yes web-push@3.6.7 generate-vapid-keys --json)
+          public=$(echo "$keys" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publicKey"])')
+          private=$(echo "$keys" | python3 -c 'import json,sys; print(json.load(sys.stdin)["privateKey"])')
+          echo "::add-mask::$private"
+          supabase secrets set --project-ref "$SUPABASE_PROJECT_REF" \
+            "VAPID_PUBLIC_KEY=$public" \
+            "VAPID_PRIVATE_KEY=$private" \
+            "VAPID_SUBJECT=https://sakselson-a11y.github.io/hundappen/"
+          echo "Nya VAPID-nycklar sparade i Supabase."
+
+      - name: Publicera Edge Functions
+        run: supabase functions deploy --use-api --project-ref "$SUPABASE_PROJECT_REF"

@@ -1,4 +1,7 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { isIOS, isStandalone } from './pwa.ts'
+import InstallGuideScreen from './screens/InstallGuideScreen.tsx'
 import { AuthProvider, useAuth } from './auth/AuthProvider.tsx'
 import LoginScreen from './screens/LoginScreen.tsx'
 import NameScreen from './screens/NameScreen.tsx'
@@ -8,8 +11,28 @@ import { HouseholdProvider } from './household/HouseholdProvider.tsx'
 function Content() {
   const { t } = useTranslation()
   const { loading, session, profile } = useAuth()
+  const [skipGuide, setSkipGuide] = useState(() => {
+    try {
+      return localStorage.getItem('hundappen.installGuideSkipped') === '1'
+    } catch {
+      return false
+    }
+  })
 
   if (loading) return <p className="muted center">{t('common.loading')}</p>
+  if (!session && isIOS() && !isStandalone() && !skipGuide)
+    return (
+      <InstallGuideScreen
+        onSkip={() => {
+          setSkipGuide(true)
+          try {
+            localStorage.setItem('hundappen.installGuideSkipped', '1')
+          } catch {
+            // ignoreras
+          }
+        }}
+      />
+    )
   if (!session) return <LoginScreen />
   if (!profile?.display_name) return <NameScreen />
   return (

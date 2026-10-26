@@ -9,6 +9,12 @@ export interface Profile {
 }
 
 export type MemberRole = 'owner' | 'member'
+export type ReminderPref = 'all' | 'mine' | 'none'
+
+export interface MemberPrefs {
+  notify_events: boolean
+  notify_reminders: ReminderPref
+}
 
 export interface Household {
   id: string

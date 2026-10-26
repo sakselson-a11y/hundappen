@@ -158,5 +158,43 @@
     "hoursAgo_one": "för {{count}} tim sedan",
     "hoursAgo_other": "för {{count}} tim sedan",
     "hoursMinutesAgo": "för {{h}} tim {{m}} min sedan"
+  },
+  "install": {
+    "title": "Lägg till Hundappen på hemskärmen",
+    "intro": "Då öppnas den som en vanlig app och kan skicka notiser när någon rastar eller när det är dags att gå ut.",
+    "step1": "Tryck på dela-knappen i Safari. (Ser du den inte? Tryck först på ••• längst ner.)",
+    "step2": "Bläddra ner och välj ”Lägg till på hemskärmen”.",
+    "step3": "Tryck på ”Lägg till” uppe till höger.",
+    "step4": "Öppna Hundappen från hemskärmen och logga in där.",
+    "inviteTitle": "Spara din inbjudningskod",
+    "inviteText": "Skriv in den här koden när du loggat in i appen på hemskärmen:",
+    "skip": "Fortsätt i webbläsaren i stället"
+  },
+  "notifications": {
+    "title": "Notiser",
+    "thisDevice": "På den här enheten",
+    "statusOn": "På",
+    "statusOff": "Av",
+    "statusDenied": "Blockerade",
+    "statusUnsupported": "Stöds inte",
+    "statusNeedsInstall": "Kräver hemskärmen",
+    "enable": "Slå på notiser",
+    "enableTitle": "Slå på notiser",
+    "enableText": "Få veta när någon rastar eller matar, och få påminnelser när det är dags.",
+    "enableFailed": "Det gick inte att slå på notiser. Försök igen.",
+    "sendTest": "Skicka testnotis",
+    "testSent_one": "Testnotis skickad till {{count}} enhet.",
+    "testSent_other": "Testnotis skickad till {{count}} enheter.",
+    "testNoDevices": "Ingen enhet tog emot notisen. Slå av och på notiser och försök igen.",
+    "installTitle": "Få notiser på iPhone",
+    "installText": "Notiser fungerar först när appen ligger på hemskärmen:",
+    "notNow": "Inte nu",
+    "eventsLabel": "Notis när någon rastar eller matar {{dog}}",
+    "remindersLabel": "Påminnelser",
+    "remindersAll": "Alla påminnelser",
+    "remindersMine": "Bara när det är min tur",
+    "remindersNone": "Inga påminnelser",
+    "deniedHelp": "Notiser är blockerade. Slå på dem under Inställningar → Notiser → Hundappen.",
+    "iosTooOld": "Notiser kräver iOS 16.4 eller senare. Uppdatera under Inställningar → Allmänt → Programuppdatering."
   }
 }

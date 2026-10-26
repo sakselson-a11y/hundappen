@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { supabase } from '../lib/supabase.ts'
 import { useAuth } from '../auth/AuthProvider.tsx'
-import type { Dog, Household, Member, MemberRole } from '../lib/types.ts'
+import type { Dog, Household, Member, MemberPrefs, MemberRole } from '../lib/types.ts'
 
 interface HouseholdState {
   loading: boolean
@@ -10,6 +10,7 @@ interface HouseholdState {
   role: MemberRole | null
   dogs: Dog[]
   members: Member[]
+  myPrefs: MemberPrefs | null
   memberName: (userId: string | null) => string | null
   reload: () => Promise<void>
 }
@@ -25,6 +26,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
   const [role, setRole] = useState<MemberRole | null>(null)
   const [dogs, setDogs] = useState<Dog[]>([])
   const [members, setMembers] = useState<Member[]>([])
+  const [myPrefs, setMyPrefs] = useState<MemberPrefs | null>(null)
 
   const reload = useCallback(async () => {
     if (!userId) return
@@ -32,7 +34,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     // Version 1: en användare tillhör högst ett hushåll.
     const { data: membership, error: memberError } = await supabase
       .from('household_members')
-      .select('role, household:households(*)')
+      .select('role, notify_events, notify_reminders, household:households(*)')
       .eq('user_id', userId)
       .order('joined_at')
       .limit(1)
@@ -45,6 +47,11 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     const hh = (membership?.household ?? null) as unknown as Household | null
     setHousehold(hh)
     setRole((membership?.role as MemberRole) ?? null)
+    setMyPrefs(
+      membership
+        ? { notify_events: membership.notify_events, notify_reminders: membership.notify_reminders as MemberPrefs['notify_reminders'] }
+        : null,
+    )
 
     if (hh) {
       const [dogResult, memberResult] = await Promise.all([
@@ -81,7 +88,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
   )
 
   return (
-    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, members, memberName, reload }}>
+    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, members, myPrefs, memberName, reload }}>
       {children}
     </HouseholdContext.Provider>
   )

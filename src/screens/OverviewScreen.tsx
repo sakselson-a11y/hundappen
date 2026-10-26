@@ -5,6 +5,7 @@ import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { formatTime, relativeTime, useNow } from '../lib/time.ts'
 import DogCard from '../components/DogCard.tsx'
 import LogSheet from '../components/LogSheet.tsx'
+import NotificationsCard from '../components/NotificationsCard.tsx'
 import type { Dog, DogEvent, EventType } from '../lib/types.ts'
 
 function LatestRow({ label, event }: { label: string; event: DogEvent | undefined }) {
@@ -65,6 +66,8 @@ export default function OverviewScreen({ dog, onEditDog }: { dog: Dog; onEditDog
           </>
         )}
       </section>
+
+      <NotificationsCard />
 
       {logging && <LogSheet dog={dog} type={logging} onClose={() => setLogging(null)} />}
     </>
