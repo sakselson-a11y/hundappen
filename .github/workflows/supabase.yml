@@ -30,6 +30,14 @@ jobs:
           sudo -u postgres createuser --superuser runner
           PGHOST=/var/run/postgresql PGUSER=runner PGDATABASE=postgres scripts/test-db.sh
 
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Testa Edge Functions
+        working-directory: supabase/functions
+        run: deno test _shared/ && deno check */index.ts
+
       - name: Kontrollera hemligheter
         run: |
           if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_DB_PASSWORD" ]; then

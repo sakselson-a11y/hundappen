@@ -30,3 +30,12 @@ grant all on storage.objects, storage.buckets to anon, authenticated, service_ro
 
 -- Realtime
 create publication supabase_realtime;
+
+-- pg_net (anrop sparas i en tabell i stället för att skickas)
+create schema net;
+create table net.calls (url text, body jsonb);
+create function net.http_post(url text, body jsonb default '{}', params jsonb default '{}',
+  headers jsonb default '{}', timeout_milliseconds int default 5000)
+returns bigint language sql as $$ insert into net.calls values (url, body); select 1::bigint $$;
+grant usage on schema net to authenticated, service_role;
+grant all on net.calls to authenticated, service_role;

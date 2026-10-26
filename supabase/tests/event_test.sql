@@ -31,9 +31,17 @@ insert into storage.objects (bucket_id, name)
 insert into public.events (id, household_id, dog_id, type, logged_by, pee, poop, photo_path)
   select eid, hid, did, 'walk', auth.uid(), true, true, hid || '/events/' || eid || '.jpg' from ids;
 select pg_temp.check('logg med foto sparas', (select photo_path is not null from public.events));
+reset role;
+select pg_temp.check('ny logg anropar notify-event',
+  (select count(*) from net.calls where url like '%/functions/v1/notify-event'
+     and body->>'event_id' = (select eid::text from ids)) = 1);
+set role authenticated;
 select pg_temp.check('foto i events-mappen sparas', (select count(*) from storage.objects) = 1);
 
 update public.events set occurred_at = now() - interval '1 hour', note = 'Glömde logga';
+reset role;
+select pg_temp.check('ändring av logg ger ingen ny notis', (select count(*) from net.calls) = 1);
+set role authenticated;
 select pg_temp.check('egen logg kan ändras', (select note = 'Glömde logga' from public.events));
 
 set request.jwt.claim.sub = '00000000-0000-0000-0000-00000000000c';
