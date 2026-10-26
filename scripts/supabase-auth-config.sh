@@ -38,15 +38,18 @@ else:
 PY
 }
 
+urls_body=$(json urls)
+templates_body=$(json templates)
+
 # 1. Adresser (fungerar alltid).
-if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$(json urls)" > /dev/null; then
+if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$urls_body" > /dev/null; then
   echo "::error::$LAST_ERROR" >&2
   exit 1
 fi
 echo "Site URL och Redirect URLs uppdaterade."
 
 # 2. Mejlmallar med kod. Kräver egen SMTP på gratisnivån.
-if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$(json templates)" > /dev/null; then
+if ! call -X PATCH "$API" -H "Content-Type: application/json" -d "$templates_body" > /dev/null; then
   if [[ "$LAST_ERROR" == *"custom SMTP"* ]]; then
     echo "::warning::Mejlmallen med kod kunde inte sparas eftersom ingen egen SMTP-tjänst är inkopplad. Den sparas automatiskt vid nästa körning när SMTP är inställt."
     exit 0
@@ -65,7 +68,7 @@ for key in ("mailer_templates_magic_link_content", "mailer_templates_confirmatio
     if "{{ .Token }}" not in (c.get(key) or ""):
         print(f"::error::{key} saknar koden {{{{ .Token }}}}"); ok = False
 if c.get("site_url") != sys.argv[1]:
-    print(f"::error::site_url är {c.get(\"site_url\")}"); ok = False
+    print("::error::site_url är " + str(c.get("site_url"))); ok = False
 print("Mejlmallar med kod uppdaterade." if ok else "Något sparades inte.")
 sys.exit(0 if ok else 1)
 ' "$SITE_URL"
