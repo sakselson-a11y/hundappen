@@ -46,9 +46,10 @@ export default function App() {
   const { t } = useTranslation()
   return (
     <main className="page">
-      <header className="hero">
-        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={56} height={56} />
+      <header className="app-header">
+        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={36} height={36} />
         <h1>{t('app.name')}</h1>
+        <span className="stripe" aria-hidden />
       </header>
       <AuthProvider>
         <Content />

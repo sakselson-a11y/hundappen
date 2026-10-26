@@ -77,6 +77,13 @@ export default function FamilyCard({ dogName }: { dogName: string }) {
     }
   }
 
+  async function makeOwner(member: Member) {
+    if (!window.confirm(t('family.confirmMakeOwner', { name: member.display_name ?? '' }))) return
+    const { error } = await supabase.rpc('transfer_ownership', { new_owner: member.user_id })
+    if (error) setError(t('errors.generic'))
+    await reload()
+  }
+
   async function remove(member: Member) {
     if (!householdId) return
     const name = member.display_name ?? ''
@@ -102,9 +109,14 @@ export default function FamilyCard({ dogName }: { dogName: string }) {
             </span>
             {m.role === 'owner' && <span className="tag">{t('family.owner')}</span>}
             {isOwner && m.user_id !== session?.user.id && (
-              <button className="link danger" onClick={() => remove(m)} aria-label={t('family.remove')}>
-                {t('family.remove')}
-              </button>
+              <span className="row">
+                <button className="link small" onClick={() => makeOwner(m)}>
+                  {t('family.makeOwner')}
+                </button>
+                <button className="link small danger" onClick={() => remove(m)}>
+                  {t('family.remove')}
+                </button>
+              </span>
             )}
           </li>
         ))}

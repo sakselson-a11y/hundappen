@@ -61,7 +61,7 @@ export default function NotificationsCard() {
 
   if (status !== 'off') return null
   return (
-    <section className="card form notify-card">
+    <section className="card form highlight">
       <h2>🔔 {t('notifications.enableTitle')}</h2>
       <p className="muted">{t('notifications.enableText')}</p>
       {error && <p className="error">{error}</p>}

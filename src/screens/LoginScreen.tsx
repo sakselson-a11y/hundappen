@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { supabase } from '../lib/supabase.ts'
 import { authErrorMessage } from '../lib/errors.ts'
 import InviteBanner from '../components/InviteBanner.tsx'
+import PrivacySheet from '../components/PrivacySheet.tsx'
 
 type Step = 'email' | 'code'
 
@@ -13,6 +14,7 @@ export default function LoginScreen() {
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showPrivacy, setShowPrivacy] = useState(false)
 
   async function sendCode(e?: FormEvent) {
     e?.preventDefault()
@@ -110,6 +112,12 @@ export default function LoginScreen() {
           {busy ? t('common.wait') : t('login.sendCode')}
         </button>
       </form>
+      <div className="footer-links">
+        <button className="link small" onClick={() => setShowPrivacy(true)}>
+          {t('privacy.link')}
+        </button>
+      </div>
+      {showPrivacy && <PrivacySheet onClose={() => setShowPrivacy(false)} />}
     </>
   )
 }

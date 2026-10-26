@@ -36,3 +36,13 @@
 - pg_cron kör `trigger_reminders()` varje minut; den anropar Edge Function `send-reminders` bara när något väntar.
 - `claim_due_reminders()` lämnar ut varje tillfälle en gång (reminder_log) och hoppar över om samma typ loggats inom fönstret.
 - "Bara min tur": en tid utan ansvarig räknas som allas tur.
+
+## Konto och integritet (steg 10)
+- Medlem kan lämna. Ägare måste först göra någon annan till ägare (`transfer_ownership`), om inte hushållet är tomt.
+- Edge Function `account`: `leave` (ensam ägare → hushållet och foton tas bort) och `delete` (konto bort; ägare med andra medlemmar → den som gick med först blir ägare).
+- Loggar från borttagna konton finns kvar som "Tidigare medlem".
+- Integritetstext i appen (Integritet-länk på inloggningen och under Familjen → Konto).
+
+## Utseende
+- Gul (#FFC81E) och svart (#141414) på varmt papper, tydliga kanter och "tryckta" skuggor.
+- Rubriktypsnitt Bricolage Grotesque (SIL OFL), lokalt i src/assets/fonts.

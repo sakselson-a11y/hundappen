@@ -111,7 +111,9 @@
     "share": "Dela inbjudan",
     "copied": "Kopierat!",
     "newCode": "Skapa ny kod (den gamla slutar fungera)",
-    "createInvite": "Skapa inbjudan"
+    "createInvite": "Skapa inbjudan",
+    "makeOwner": "Gör till ägare",
+    "confirmMakeOwner": "Göra {{name}} till ägare? Du blir vanlig medlem och kan inte längre bjuda in."
   },
   "tabs": {
     "overview": "Översikt",
@@ -255,5 +257,61 @@
     },
     "nextLater": "Nästa {{what}}: {{when}}",
     "tomorrow": "imorgon"
+  },
+  "account": {
+    "changeName": "Ändra namn",
+    "dangerTitle": "Lämna eller ta bort",
+    "leave": "Lämna {{dog}}s familj",
+    "leaveHelp": "Du slutar se {{dog}} och får inga notiser. Dina loggar finns kvar i familjens historik.",
+    "leaveOwnerHelp": "Du är ägare. Gör någon annan till ägare i listan ovan innan du lämnar.",
+    "ownerMustTransfer": "Du är ägare. Gör någon annan i familjen till ägare först (i listan ovan).",
+    "confirmLeave": "Lämna {{dog}}s familj? Du behöver en ny inbjudan för att komma tillbaka.",
+    "confirmLeaveLastOwner": "Du är ensam i familjen. Om du lämnar tas {{dog}}, alla loggar, schemat och foton bort för gott. Fortsätta?",
+    "delete": "Ta bort mitt konto",
+    "deleteHelp": "Ditt konto, namn, e-postadress och notisinställningar tas bort. Loggar du gjort finns kvar i familjens historik som ”Tidigare medlem”.",
+    "confirmDelete": "Ta bort ditt konto? Är du ägare blir den som gick med först ny ägare.",
+    "confirmDeleteLastOwner": "Ta bort ditt konto? Du är ensam i familjen, så {{dog}}, alla loggar, schemat och foton tas också bort.",
+    "confirmDeleteAgain": "Är du helt säker? Det går inte att ångra."
+  },
+  "privacy": {
+    "link": "Integritet",
+    "title": "Integritet",
+    "intro": "Hundappen samlar bara in det som behövs för att familjen ska kunna dela ansvaret för hunden.",
+    "sections": [
+      {
+        "title": "Vad som sparas",
+        "items": [
+          "Din e-postadress (för inloggning) och ditt förnamn.",
+          "Hundens namn, ras, födelsedatum och foto.",
+          "Loggar: rastning och mat, vem och när, kommentarer och foton.",
+          "Schemat och vems tur det är.",
+          "En teknisk adress per enhet för pushnotiser, och dina notisval."
+        ]
+      },
+      {
+        "title": "Vem som ser det",
+        "items": [
+          "Bara medlemmarna i ditt hushåll. Andra familjer ser ingenting.",
+          "Ingen reklam, ingen spårning och inga analysverktyg."
+        ]
+      },
+      {
+        "title": "Var det lagras",
+        "items": [
+          "Data och foton lagras hos Supabase i Stockholm (EU).",
+          "Inloggningsmejl skickas via Gmail. Pushnotiser går via Apples (eller webbläsarens) notistjänst, krypterade.",
+          "Appen sparar din inloggning i telefonen."
+        ]
+      },
+      {
+        "title": "Dina rättigheter",
+        "items": [
+          "Du kan ändra ditt namn och lämna hushållet när du vill (Familjen → Konto).",
+          "”Ta bort mitt konto” raderar ditt konto och dina personuppgifter direkt. Loggar du gjort finns kvar i familjens historik utan namn.",
+          "Frågor? Skapa ett ärende på github.com/sakselson-a11y/hundappen/issues."
+        ]
+      }
+    ],
+    "updated": "Senast uppdaterad 26 oktober 2026."
   }
 }
