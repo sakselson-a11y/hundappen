@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './auth/AuthProvider.tsx'
 import LoginScreen from './screens/LoginScreen.tsx'
 import NameScreen from './screens/NameScreen.tsx'
 import HomeScreen from './screens/HomeScreen.tsx'
+import { HouseholdProvider } from './household/HouseholdProvider.tsx'
 
 function Content() {
   const { t } = useTranslation()
@@ -11,7 +12,11 @@ function Content() {
   if (loading) return <p className="muted center">{t('common.loading')}</p>
   if (!session) return <LoginScreen />
   if (!profile?.display_name) return <NameScreen />
-  return <HomeScreen />
+  return (
+    <HouseholdProvider>
+      <HomeScreen />
+    </HouseholdProvider>
+  )
 }
 
 export default function App() {

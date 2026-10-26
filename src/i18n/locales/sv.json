@@ -7,7 +7,12 @@
     "loading": "Laddar …",
     "wait": "Vänta …",
     "continue": "Fortsätt",
-    "signOut": "Logga ut"
+    "signOut": "Logga ut",
+    "optional": "(valfritt)",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "edit": "Redigera",
+    "retry": "Försök igen"
   },
   "login": {
     "title": "Logga in",
@@ -27,9 +32,9 @@
     "label": "Förnamn"
   },
   "home": {
-    "greeting": "Hej {{name}}!",
-    "signedInAs": "Inloggad som {{email}}",
-    "comingSoon": "Här kommer din hund och översikten att synas."
+    "signedInAs": "{{name}} · {{email}}",
+    "account": "Konto",
+    "comingSoon": "Här kommer loggning av rastning och mat, schema och historik."
   },
   "errors": {
     "generic": "Något gick fel. Försök igen.",
@@ -50,5 +55,33 @@
     "no": "Nej",
     "noInstallHint": "Pushnotiser fungerar på iPhone först när appen har lagts till på hemskärmen.",
     "version": "Version"
+  },
+  "dog": {
+    "name": "Namn",
+    "breed": "Ras",
+    "birthDate": "Födelsedatum",
+    "choosePhoto": "Välj foto",
+    "changePhoto": "Byt foto",
+    "removePhoto": "Ta bort foto"
+  },
+  "createDog": {
+    "welcome": "Välkommen!",
+    "intro": "Börja med att lägga till din hund. Sedan kan du bjuda in resten av familjen.",
+    "title": "Lägg till hund",
+    "submit": "Lägg till",
+    "joinTitle": "Har någon i familjen redan lagt till hunden?",
+    "joinText": "Be dem bjuda in dig, så delar ni samma hund. Inbjudningar kommer snart."
+  },
+  "editDog": {
+    "title": "Redigera {{name}}"
+  },
+  "age": {
+    "weeks_one": "{{count}} vecka",
+    "weeks_other": "{{count}} veckor",
+    "months_one": "{{count}} månad",
+    "months_other": "{{count}} månader",
+    "years_one": "{{count}} år",
+    "years_other": "{{count}} år",
+    "yearsAndMonths": "{{years}} år och {{months}}"
   }
 }
