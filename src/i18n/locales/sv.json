@@ -116,7 +116,8 @@
   "tabs": {
     "overview": "Översikt",
     "history": "Historik",
-    "family": "Familjen"
+    "family": "Familjen",
+    "schedule": "Schema"
   },
   "overview": {
     "logWalk": "Rastning",
@@ -196,5 +197,63 @@
     "remindersNone": "Inga påminnelser",
     "deniedHelp": "Notiser är blockerade. Slå på dem under Inställningar → Notiser → Hundappen.",
     "iosTooOld": "Notiser kräver iOS 16.4 eller senare. Uppdatera under Inställningar → Allmänt → Programuppdatering."
+  },
+  "schedule": {
+    "title": "Schema för {{dog}}",
+    "empty": "Inga tider än. Lägg till t.ex. morgonpromenad 07:00 och kvällsmat 17:30.",
+    "add": "Lägg till tid",
+    "addTitle": "Ny tid i schemat",
+    "editTitle": "Ändra tid",
+    "time": "Klockslag",
+    "daysLabel": "Dagar",
+    "noDays": "Välj minst en dag.",
+    "responsible": "Vems tur",
+    "nobody": "Ingen särskild",
+    "turnOf": "{{name}}s tur",
+    "remind": "Påminnelse",
+    "noReminder": "Ingen påminnelse",
+    "minutesBefore_one": "{{count}} min innan",
+    "minutesBefore_other": "{{count}} min innan",
+    "skip": "Räknas som klar om någon loggat",
+    "skipOption_one": "upp till {{count}} min innan",
+    "skipOption_other": "upp till {{count}} min innan",
+    "skipHelp": "Har någon redan rastat eller matat {{dog}} inom den tiden skickas ingen påminnelse.",
+    "active": "Aktiv",
+    "paused": "Pausad",
+    "delete": "Ta bort tiden",
+    "confirmDelete": "Ta bort den här tiden ur schemat?",
+    "zoneNote": "Tiderna gäller i hushållets tidszon ({{zone}}).",
+    "days": {
+      "everyDay": "Varje dag",
+      "weekdays": "Vardagar",
+      "weekends": "Helger"
+    },
+    "dayShort": {
+      "mon": "mån",
+      "tue": "tis",
+      "wed": "ons",
+      "thu": "tor",
+      "fri": "fre",
+      "sat": "lör",
+      "sun": "sön"
+    }
+  },
+  "today": {
+    "title": "Idag",
+    "noSchedule": "Inget schema än.",
+    "createSchedule": "Lägg till tider i schemat ›",
+    "nothingToday": "Inget schemalagt idag.",
+    "doneBy": "{{name}} kl. {{time}}",
+    "turnOf": "{{name}}s tur",
+    "anyone": "Vem som helst",
+    "next": "Nästa",
+    "status": {
+      "upcoming": "Senare",
+      "due": "Nu",
+      "missed": "Missad",
+      "done": "Klar"
+    },
+    "nextLater": "Nästa {{what}}: {{when}}",
+    "tomorrow": "imorgon"
   }
 }

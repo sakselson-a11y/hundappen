@@ -6,6 +6,7 @@ import { formatTime, relativeTime, useNow } from '../lib/time.ts'
 import DogCard from '../components/DogCard.tsx'
 import LogSheet from '../components/LogSheet.tsx'
 import NotificationsCard from '../components/NotificationsCard.tsx'
+import TodayCard from '../components/TodayCard.tsx'
 import type { Dog, DogEvent, EventType } from '../lib/types.ts'
 
 function LatestRow({ label, event }: { label: string; event: DogEvent | undefined }) {
@@ -34,7 +35,15 @@ function LatestRow({ label, event }: { label: string; event: DogEvent | undefine
   )
 }
 
-export default function OverviewScreen({ dog, onEditDog }: { dog: Dog; onEditDog: () => void }) {
+export default function OverviewScreen({
+  dog,
+  onEditDog,
+  onOpenSchedule,
+}: {
+  dog: Dog
+  onEditDog: () => void
+  onOpenSchedule: () => void
+}) {
   const { t } = useTranslation()
   const { events, loading } = useEvents()
   const [logging, setLogging] = useState<EventType | null>(null)
@@ -55,6 +64,8 @@ export default function OverviewScreen({ dog, onEditDog }: { dog: Dog; onEditDog
           {t('overview.logMeal')}
         </button>
       </div>
+
+      <TodayCard dog={dog} onOpenSchedule={onOpenSchedule} />
 
       <section className="card">
         {loading ? (

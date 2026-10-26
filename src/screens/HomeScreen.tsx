@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { EventsProvider } from '../household/EventsProvider.tsx'
+import { SchedulesProvider } from '../household/SchedulesProvider.tsx'
+import ScheduleScreen from './ScheduleScreen.tsx'
 import TabBar, { type Tab } from '../components/TabBar.tsx'
 import CreateDogScreen from './CreateDogScreen.tsx'
 import EditDogScreen from './EditDogScreen.tsx'
@@ -39,12 +41,17 @@ export default function HomeScreen() {
 
   return (
     <EventsProvider>
-      <div className="with-tabbar">
-        {tab === 'overview' && <OverviewScreen dog={dog} onEditDog={() => setEditing(true)} />}
-        {tab === 'history' && <HistoryScreen />}
-        {tab === 'family' && <FamilyScreen dog={dog} />}
-      </div>
-      <TabBar active={tab} onChange={changeTab} />
+      <SchedulesProvider>
+        <div className="with-tabbar">
+          {tab === 'overview' && (
+            <OverviewScreen dog={dog} onEditDog={() => setEditing(true)} onOpenSchedule={() => changeTab('schedule')} />
+          )}
+          {tab === 'history' && <HistoryScreen />}
+          {tab === 'schedule' && <ScheduleScreen dog={dog} />}
+          {tab === 'family' && <FamilyScreen dog={dog} />}
+        </div>
+        <TabBar active={tab} onChange={changeTab} />
+      </SchedulesProvider>
     </EventsProvider>
   )
 }

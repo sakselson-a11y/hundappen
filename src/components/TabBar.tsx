@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next'
 
-export type Tab = 'overview' | 'history' | 'family'
+export type Tab = 'overview' | 'history' | 'schedule' | 'family'
 
 const TABS: { id: Tab; icon: string }[] = [
   { id: 'overview', icon: '🏠' },
   { id: 'history', icon: '📋' },
+  { id: 'schedule', icon: '🗓️' },
   { id: 'family', icon: '👨‍👩‍👧' },
 ]
 

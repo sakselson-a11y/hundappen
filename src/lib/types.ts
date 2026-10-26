@@ -56,3 +56,18 @@ export interface DogEvent {
   photo_path: string | null
   created_at: string
 }
+
+export interface Schedule {
+  id: string
+  household_id: string
+  dog_id: string
+  type: EventType
+  local_time: string // "07:00:00"
+  days_of_week: number[] // 1 = måndag … 7 = söndag
+  responsible_user_id: string | null
+  remind_minutes_before: number | null
+  skip_window_minutes: number
+  active: boolean
+  created_by: string | null
+  created_at: string
+}
