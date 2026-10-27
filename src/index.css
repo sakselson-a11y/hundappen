@@ -99,7 +99,8 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
 .form { display: flex; flex-direction: column; gap: 14px; }
 .form h2 { margin: 0; }
 .form p { margin: 0; }
-.form label, .field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }
+.form label, .field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; min-width: 0; }
+.form > * { min-width: 0; }
 .field-label { font-weight: 600; font-size: 15px; }
 
 input, textarea, select {
@@ -111,7 +112,23 @@ input, textarea, select {
   background: var(--bg);
   color: var(--text);
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
+select { text-overflow: ellipsis; }
+
+/* Safari på iPhone ger tid- och datumfält en egen minsta bredd som går före width: 100%
+   och gör panelen bredare än skärmen. appearance: none tar bort den. */
+input[type='time'],
+input[type='date'],
+input[type='datetime-local'] {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  min-height: 52px;
+  text-align: left;
+}
+input::-webkit-date-and-time-value { text-align: left; margin: 0; }
 textarea { resize: vertical; }
 input:focus, textarea:focus, select:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px var(--accent); }
 .code-input { letter-spacing: 0.3em; font-size: 24px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; }
@@ -231,7 +248,9 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
   display: flex; align-items: flex-end; justify-content: center;
 }
 .sheet {
-  background: var(--surface); width: 100%; max-width: 560px; max-height: 92dvh; overflow-y: auto;
+  background: var(--surface); width: 100%; max-width: 560px; max-height: 92dvh;
+  /* Bara lodrät skrollning i panelen, aldrig i sidled. */
+  overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
   border: 2px solid var(--ink); border-bottom: none; border-radius: 22px 22px 0 0;
   padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
   display: flex; flex-direction: column; gap: 12px;
@@ -243,6 +262,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .sheet-text ul { margin: 0 0 8px; padding-left: 20px; }
 
 .chips { display: flex; gap: 10px; }
+.chip { min-width: 0; }
 .chip {
   flex: 1; background: var(--bg); color: var(--text); border: 2px solid var(--border); font-weight: 700; padding: 14px 8px;
 }
@@ -284,10 +304,10 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 .toggle-row input { width: 51px; height: 31px; flex-shrink: 0; accent-color: var(--accent-strong); }
 
 /* Schema */
-.segmented { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--sunken); padding: 4px; border-radius: 14px; }
-.segmented button { background: none; padding: 10px; font-weight: 700; }
+.segmented { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; background: var(--sunken); padding: 4px; border-radius: 14px; }
+.segmented button { background: none; padding: 10px 6px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
 .segmented button.on { background: var(--accent); color: var(--on-accent); border: 2px solid var(--ink); }
-.day-picker { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.day-picker { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .day-picker button { padding: 10px 0; font-size: 14px; background: var(--bg); border: 2px solid var(--border); font-weight: 600; }
 .day-picker button.on { background: var(--accent); border-color: var(--ink); color: var(--on-accent); font-weight: 800; }
 .presets { justify-content: flex-start; gap: 16px; }
