@@ -430,3 +430,6 @@ verify_jwt = false
 
 [functions.account]
 verify_jwt = false
+
+[functions.notify-swap]
+verify_jwt = false

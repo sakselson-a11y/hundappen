@@ -3,6 +3,7 @@
 import { adminClient, corsHeaders, json } from '../_shared/supabase.ts'
 import { sendPush, type PushSubscriptionRow } from '../_shared/push.ts'
 import { eventMessage } from '../_shared/messages.ts'
+import { activeMembersFilter } from '../_shared/members.ts'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders })
@@ -32,7 +33,8 @@ Deno.serve(async (req) => {
       .select('user_id')
       .eq('household_id', event.household_id)
       .eq('notify_events', true)
-      .neq('user_id', event.logged_by),
+      .neq('user_id', event.logged_by)
+      .or(activeMembersFilter()),
   ])
 
   const recipients = (members ?? []).map((m) => m.user_id)

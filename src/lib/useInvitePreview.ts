@@ -5,6 +5,8 @@ import { normalizeCode } from './invite.ts'
 export interface InvitePreview {
   dogName: string | null
   inviterName: string | null
+  // Hundvakt: antal dagar, annars null.
+  guestDays: number | null
 }
 
 // Hämtar "Sven bjuder in dig till Tucci" för en kod. null = ogiltig eller ej hämtad.
@@ -15,8 +17,8 @@ export function useInvitePreview(code: string | null): InvitePreview | null {
     setPreview(null)
     if (!code || normalizeCode(code).length !== 8) return
     supabase.rpc('invite_preview', { invite_code: code }).then(({ data }) => {
-      const row = (data as { dog_name: string | null; inviter_name: string | null }[] | null)?.[0]
-      if (!cancelled && row) setPreview({ dogName: row.dog_name, inviterName: row.inviter_name })
+      const row = (data as { dog_name: string | null; inviter_name: string | null; guest_days: number | null }[] | null)?.[0]
+      if (!cancelled && row) setPreview({ dogName: row.dog_name, inviterName: row.inviter_name, guestDays: row.guest_days })
     })
     return () => {
       cancelled = true

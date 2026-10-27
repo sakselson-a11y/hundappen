@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { matchingEvent, nextOccurrence, occurrencesOnDay, occurrenceStatus, todayInZone, zonedTime } from './schedule.ts'
+import { matchingEvent, nextOccurrence, occurrencesOnDay, occurrenceStatus, responsibleFor, todayInZone, zonedTime } from './schedule.ts'
 import type { DogEvent, Schedule } from './types.ts'
 
 const TZ = 'Europe/Stockholm'
@@ -110,5 +110,14 @@ describe('status', () => {
     expect(occurrenceStatus(occ, [], new Date('2026-11-02T05:00:00Z'))).toBe('upcoming')
     expect(occurrenceStatus(occ, [], new Date('2026-11-02T07:00:00Z'))).toBe('due')
     expect(occurrenceStatus(occ, [], new Date('2026-11-02T08:30:00Z'))).toBe('missed')
+  })
+})
+
+describe('byt tur', () => {
+  const s = schedule({ responsible_user_id: 'ester' })
+  const overrides = [{ schedule_id: 's1', occurrence_date: '2026-11-02', household_id: 'h', responsible_user_id: 'sven', changed_by: 'sven' }]
+  it('bytet gäller bara den dagen', () => {
+    expect(responsibleFor(s, '2026-11-02', overrides)).toEqual({ userId: 'sven', overridden: true })
+    expect(responsibleFor(s, '2026-11-03', overrides)).toEqual({ userId: 'ester', overridden: false })
   })
 })

@@ -47,7 +47,9 @@ export default function JoinHouseholdCard() {
       </label>
       {preview?.dogName && (
         <p className="success">
-          {t('invite.previewLine', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName })}
+          {preview.guestDays
+            ? t('invite.previewLineSitter', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName, count: preview.guestDays })
+            : t('invite.previewLine', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName })}
         </p>
       )}
       {error && <p className="error">{error}</p>}

@@ -4,6 +4,7 @@ import { adminClient, corsHeaders, json } from '../_shared/supabase.ts'
 import { sendPush, type PushSubscriptionRow } from '../_shared/push.ts'
 import { reminderMessage } from '../_shared/messages.ts'
 import { reminderRecipients, type MemberPref } from '../_shared/recipients.ts'
+import { activeMembersFilter } from '../_shared/members.ts'
 
 interface DueReminder {
   schedule_id: string
@@ -34,6 +35,7 @@ Deno.serve(async (req) => {
       .from('household_members')
       .select('user_id, notify_reminders')
       .eq('household_id', r.household_id)
+      .or(activeMembersFilter())
     const recipients = reminderRecipients((members ?? []) as MemberPref[], r.responsible_user_id)
     if (!recipients.length) continue
 

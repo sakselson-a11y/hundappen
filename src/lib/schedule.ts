@@ -1,6 +1,6 @@
 // Beräkningar för schemat. Schematider gäller i hushållets tidszon (klarar sommartid);
 // resultaten är vanliga Date-objekt (UTC) som visas i telefonens tidszon.
-import type { DogEvent, Schedule } from './types.ts'
+import type { DogEvent, Schedule, ScheduleOverride } from './types.ts'
 
 // Hur länge efter schemalagd tid en logg fortfarande räknas, och när den räknas som missad.
 export const GRACE_AFTER_MINUTES = 120
@@ -127,4 +127,18 @@ export function daysPreset(days: number[]): 'everyDay' | 'weekdays' | 'weekends'
   if (key === '1,2,3,4,5') return 'weekdays'
   if (key === '6,7') return 'weekends'
   return null
+}
+
+export function ymdKey(ymd: Ymd): string {
+  return `${ymd.year}-${String(ymd.month).padStart(2, '0')}-${String(ymd.day).padStart(2, '0')}`
+}
+
+// Vems tur ett visst tillfälle är: ett byte för just den dagen går före schemat.
+export function responsibleFor(
+  schedule: Schedule,
+  dateKey: string,
+  overrides: ScheduleOverride[],
+): { userId: string | null; overridden: boolean } {
+  const o = overrides.find((x) => x.schedule_id === schedule.id && x.occurrence_date === dateKey)
+  return o ? { userId: o.responsible_user_id, overridden: true } : { userId: schedule.responsible_user_id, overridden: false }
 }

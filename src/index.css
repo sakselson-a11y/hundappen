@@ -369,3 +369,13 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 }
 .tag.pending { background: var(--accent); color: var(--on-accent); }
 .event-actions { display: flex; gap: 16px; }
+
+/* Byt tur och hundvakt */
+.today-item.swappable { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.today-item.swappable:active { background: var(--sunken); }
+.swap-list { display: flex; flex-direction: column; gap: 10px; }
+.sitter-banner {
+  background: var(--ink); color: var(--accent); border-radius: 14px; padding: 10px 14px; font-weight: 700;
+}
+.tag.sitter { background: var(--accent); color: var(--on-accent); }
+.inline-field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }

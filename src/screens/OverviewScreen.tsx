@@ -50,7 +50,8 @@ export default function OverviewScreen({
   logRequest: LogRequest | null
   onLogRequestHandled: () => void
 }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const { myExpiresAt } = useHousehold()
   const { events, loading } = useEvents()
   const [logging, setLogging] = useState<EventType | null>(null)
   const [queuedNotice, setQueuedNotice] = useState(false)
@@ -67,6 +68,14 @@ export default function OverviewScreen({
 
   return (
     <>
+      {myExpiresAt && (
+        <div className="sitter-banner">
+          {t('sitter.banner', {
+            dog: dog.name,
+            date: new Date(myExpiresAt).toLocaleDateString(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' }),
+          })}
+        </div>
+      )}
       <DogCard dog={dog} onEdit={onEditDog} />
 
       <div className="log-buttons">

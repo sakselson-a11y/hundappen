@@ -37,8 +37,11 @@ export interface Dog {
 
 export interface Member {
   user_id: string
+  household_id: string
   role: MemberRole
   display_name: string | null
+  // Hundvakt: medlemskapet gäller till den här tidpunkten.
+  expires_at: string | null
 }
 
 export type EventType = 'walk' | 'meal'
@@ -75,4 +78,13 @@ export interface Schedule {
   active: boolean
   created_by: string | null
   created_at: string
+}
+
+// Byt tur för ett tillfälle (en schemarad en viss dag i hushållets tidszon).
+export interface ScheduleOverride {
+  schedule_id: string
+  occurrence_date: string // YYYY-MM-DD
+  household_id: string
+  responsible_user_id: string | null
+  changed_by: string | null
 }

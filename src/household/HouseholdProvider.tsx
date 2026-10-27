@@ -11,6 +11,8 @@ interface HouseholdState {
   dogs: Dog[]
   members: Member[]
   myPrefs: MemberPrefs | null
+  // Hundvakt: när ens eget medlemskap går ut.
+  myExpiresAt: string | null
   memberName: (userId: string | null) => string | null
   reload: () => Promise<void>
 }
@@ -27,6 +29,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
   const [dogs, setDogs] = useState<Dog[]>([])
   const [members, setMembers] = useState<Member[]>([])
   const [myPrefs, setMyPrefs] = useState<MemberPrefs | null>(null)
+  const [myExpiresAt, setMyExpiresAt] = useState<string | null>(null)
 
   const reload = useCallback(async () => {
     if (!userId) return
@@ -34,7 +37,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     // Version 1: en användare tillhör högst ett hushåll.
     const { data: membership, error: memberError } = await supabase
       .from('household_members')
-      .select('role, notify_events, notify_reminders, household:households(*)')
+      .select('role, notify_events, notify_reminders, expires_at, household:households(*)')
       .eq('user_id', userId)
       .order('joined_at')
       .limit(1)
@@ -47,6 +50,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
     const hh = (membership?.household ?? null) as unknown as Household | null
     setHousehold(hh)
     setRole((membership?.role as MemberRole) ?? null)
+    setMyExpiresAt(membership?.expires_at ?? null)
     setMyPrefs(
       membership
         ? { notify_events: membership.notify_events, notify_reminders: membership.notify_reminders as MemberPrefs['notify_reminders'] }
@@ -58,7 +62,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
         supabase.from('dogs').select('*').eq('household_id', hh.id).is('archived_at', null).order('created_at'),
         supabase
           .from('household_members')
-          .select('user_id, role, profile:profiles(display_name)')
+          .select('user_id, household_id, role, expires_at, profile:profiles(display_name)')
           .eq('household_id', hh.id)
           .order('joined_at'),
       ])
@@ -66,10 +70,24 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
       setDogs((dogResult.data ?? []) as Dog[])
       const rows = (memberResult.data ?? []) as unknown as {
         user_id: string
+        household_id: string
         role: MemberRole
+        expires_at: string | null
         profile: { display_name: string | null } | null
       }[]
-      setMembers(rows.map((m) => ({ user_id: m.user_id, role: m.role, display_name: m.profile?.display_name ?? null })))
+      const now = new Date().toISOString()
+      setMembers(
+        rows
+          // Hundvakter vars tid gått ut (städas bort på natten).
+          .filter((m) => !m.expires_at || m.expires_at > now)
+          .map((m) => ({
+            user_id: m.user_id,
+            household_id: m.household_id,
+            role: m.role,
+            expires_at: m.expires_at,
+            display_name: m.profile?.display_name ?? null,
+          })),
+      )
     } else {
       setDogs([])
       setMembers([])
@@ -88,7 +106,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
   )
 
   return (
-    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, members, myPrefs, memberName, reload }}>
+    <HouseholdContext.Provider value={{ loading, error, household, role, dogs, members, myPrefs, myExpiresAt, memberName, reload }}>
       {children}
     </HouseholdContext.Provider>
   )

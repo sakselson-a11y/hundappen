@@ -13,7 +13,9 @@ export default function InviteBanner() {
     <section className="card invite-banner">
       <h2>
         {preview?.dogName
-          ? t('invite.bannerTitle', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName })
+          ? preview.guestDays
+            ? t('invite.bannerTitleSitter', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName, count: preview.guestDays })
+            : t('invite.bannerTitle', { inviter: preview.inviterName ?? t('invite.someone'), dog: preview.dogName })
           : t('invite.bannerTitleGeneric')}
       </h2>
       <p className="muted">{t('invite.bannerText')}</p>

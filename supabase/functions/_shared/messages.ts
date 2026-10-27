@@ -74,3 +74,35 @@ export function reminderMessage(
   const length = type === 'walk' ? walkLengthText(walkLength) : null
   return { title, body: length ? `${length} · ${turn}` : turn }
 }
+
+// Ex: { title: "🔁 Sven tar lång promenad 18:00 idag", body: "I stället för Ester" }
+export function swapMessage(opts: {
+  activity: string // "lång promenad", "mat"
+  time: string // "18:00"
+  day: string // "idag", "imorgon", "på fredag"
+  takerName: string | null // null = ingen särskild
+  previousName: string | null
+  changerName: string
+  recipientIsTaker: boolean
+  takerIsChanger: boolean
+}): { title: string; body: string } {
+  const what = `${opts.activity} ${opts.time} ${opts.day}`
+  const title = opts.recipientIsTaker
+    ? `🔁 Du tar ${what}`
+    : opts.takerName
+      ? `🔁 ${opts.takerName} tar ${what}`
+      : `🔁 Ingen särskild tar ${what}`
+  const parts: string[] = []
+  if (opts.previousName && opts.previousName !== opts.takerName) parts.push(`I stället för ${opts.previousName}`)
+  if (!opts.takerIsChanger) parts.push(`Ändrat av ${opts.changerName}`)
+  return { title, body: parts.join(' · ') }
+}
+
+// "idag", "imorgon" eller "på fredag" för ett datum (YYYY-MM-DD) i hushållets tidszon.
+export function dayWord(date: string, now: Date, timeZone: string): string {
+  const today = now.toLocaleDateString('sv-SE', { timeZone })
+  const tomorrow = new Date(now.getTime() + 24 * 3600 * 1000).toLocaleDateString('sv-SE', { timeZone })
+  if (date === today) return 'idag'
+  if (date === tomorrow) return 'imorgon'
+  return `på ${new Date(`${date}T12:00:00Z`).toLocaleDateString('sv-SE', { weekday: 'long', timeZone: 'UTC' })}`
+}

@@ -46,3 +46,11 @@
 ## Utseende
 - Gul (#FFC81E) och svart (#141414) på varmt papper, tydliga kanter och "tryckta" skuggor.
 - Rubriktypsnitt Bricolage Grotesque (SIL OFL), lokalt i src/assets/fonts.
+
+## Förbättringar (27 oktober)
+- Ändra egna loggar; varning om samma sak loggats senaste 15 min.
+- Loggning utan nät: kö i IndexedDB, skickas när nätet är tillbaka (id från telefonen, inga dubbletter).
+- Påminnelser öppnar loggformuläret (?log=walk&length=… / ?log=meal).
+- Byt tur för ett tillfälle: schedule_overrides (schemarad + lokal dag). Påminnelser följer bytet; notify-swap meddelar.
+- Hundvakt: inbjudan med guest_days ger medlemskap med expires_at. Utgångna räknas inte och städas varje natt.
+  Begränsning: en hundvakt som redan har ett eget hushåll i appen kan inte gå med (ett hushåll per användare i v1).

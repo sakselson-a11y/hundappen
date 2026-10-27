@@ -96,7 +96,12 @@
     "join": "Gå med",
     "joinDog": "Gå med i {{dog}}s familj",
     "invalid": "Koden fungerar inte. Den kan ha gått ut eller bytts ut – be om en ny.",
-    "shareText": "{{inviter}} bjuder in dig till {{dog}} i Hundappen 🐾\n\nÖppna länken för att gå med:\n{{link}}\n\nKod: {{code}}"
+    "shareText": "{{inviter}} bjuder in dig till {{dog}} i Hundappen 🐾\n\nÖppna länken för att gå med:\n{{link}}\n\nKod: {{code}}",
+    "shareTextSitter": "{{inviter}} vill att du är hundvakt för {{dog}} i {{days}} dagar 🐾\n\nÖppna länken för att gå med i Hundappen:\n{{link}}\n\nKod: {{code}}",
+    "previewLineSitter_one": "{{inviter}} bjuder in dig som hundvakt för {{dog}} i {{count}} dag.",
+    "previewLineSitter_other": "{{inviter}} bjuder in dig som hundvakt för {{dog}} i {{count}} dagar.",
+    "bannerTitleSitter_one": "{{inviter}} vill att du är hundvakt för {{dog}} i {{count}} dag",
+    "bannerTitleSitter_other": "{{inviter}} vill att du är hundvakt för {{dog}} i {{count}} dagar"
   },
   "family": {
     "title": "Familjen",
@@ -107,13 +112,20 @@
     "confirmRemove": "Ta bort {{name}} från {{dog}}s familj?",
     "inviteTitle": "Bjud in",
     "inviteText": "Dela koden med familjen. De öppnar länken eller skriver in koden i appen.",
-    "inviteExpires": "Gäller till {{date}}",
+    "inviteExpires": "Koden gäller till {{date}}",
     "share": "Dela inbjudan",
     "copied": "Kopierat!",
     "newCode": "Skapa ny kod (den gamla slutar fungera)",
     "createInvite": "Skapa inbjudan",
     "makeOwner": "Gör till ägare",
-    "confirmMakeOwner": "Göra {{name}} till ägare? Du blir vanlig medlem och kan inte längre bjuda in."
+    "confirmMakeOwner": "Göra {{name}} till ägare? Du blir vanlig medlem och kan inte längre bjuda in.",
+    "sitterUntil": "Hundvakt till {{date}}",
+    "sitterTitle": "Bjud in hundvakt",
+    "sitterText": "Hundvakten kan logga och få påminnelser om {{dog}} under en begränsad tid, men inte bjuda in andra.",
+    "sitterHowLong": "Hur länge?",
+    "sitterDays_one": "{{count}} dag",
+    "sitterDays_other": "{{count}} dagar",
+    "createSitterInvite": "Skapa hundvaktsinbjudan"
   },
   "tabs": {
     "overview": "Översikt",
@@ -265,7 +277,10 @@
       "done": "Klar"
     },
     "nextLater": "Nästa {{what}}: {{when}}",
-    "tomorrow": "imorgon"
+    "tomorrow": "imorgon",
+    "swapped": "bytt",
+    "tapToSwap": "Tryck för att byta tur",
+    "yourTurn": "Din tur"
   },
   "account": {
     "changeName": "Ändra namn",
@@ -341,5 +356,19 @@
     "delete": "Ta bort bilden",
     "confirmDelete": "Ta bort bilden? Loggen finns kvar i historiken.",
     "confirmDeleteProfile": "Ta bort {{dog}}s profilbild?"
+  },
+  "swap": {
+    "title": "Vem tar {{what}}?",
+    "current": "Just nu: {{name}}s tur.",
+    "currentNobody": "Ingen särskild har turen just nu.",
+    "illTakeIt": "Jag tar den",
+    "giveTo": "Ge turen till {{name}}",
+    "reset": "Återställ till {{name}}",
+    "resetNobody": "Återställ till ingen särskild",
+    "help": "Gäller bara det här tillfället. Schemat ändras inte, och de andra får en notis.",
+    "currentYou": "Just nu: din tur."
+  },
+  "sitter": {
+    "banner": "Du är hundvakt för {{dog}} till {{date}}. 🐾"
   }
 }

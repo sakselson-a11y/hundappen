@@ -1,5 +1,5 @@
 import { assertEquals } from 'jsr:@std/assert@1'
-import { eventMessage, reminderMessage, type EventInfo } from './messages.ts'
+import { dayWord, eventMessage, reminderMessage, swapMessage, type EventInfo } from './messages.ts'
 
 const base: EventInfo = {
   type: 'walk',
@@ -70,4 +70,25 @@ Deno.test('påminnelse vid tiden utan ansvarig', () => {
     title: '🦮 Dags att gå ut med Tucci',
     body: 'Kort rastning · Vem tar det?',
   })
+})
+
+Deno.test('byt tur: den som tar turen själv', () => {
+  assertEquals(
+    swapMessage({ activity: 'lång promenad', time: '18:00', day: 'idag', takerName: 'Sven', previousName: 'Ester', changerName: 'Sven', recipientIsTaker: false, takerIsChanger: true }),
+    { title: '🔁 Sven tar lång promenad 18:00 idag', body: 'I stället för Ester' },
+  )
+})
+
+Deno.test('byt tur: någon annan ger dig turen', () => {
+  assertEquals(
+    swapMessage({ activity: 'mat', time: '17:30', day: 'imorgon', takerName: 'Ester', previousName: 'Sven', changerName: 'Sven', recipientIsTaker: true, takerIsChanger: false }),
+    { title: '🔁 Du tar mat 17:30 imorgon', body: 'I stället för Sven · Ändrat av Sven' },
+  )
+})
+
+Deno.test('dagord i Stockholmstid', () => {
+  const now = new Date('2026-10-27T23:30:00Z') // 00:30 den 28 okt i Stockholm (vintertid, UTC+1)
+  assertEquals(dayWord('2026-10-28', now, 'Europe/Stockholm'), 'idag')
+  assertEquals(dayWord('2026-10-29', now, 'Europe/Stockholm'), 'imorgon')
+  assertEquals(dayWord('2026-10-30', now, 'Europe/Stockholm'), 'på fredag')
 })
