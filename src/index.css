@@ -1,4 +1,4 @@
-/* Hundappen – formspråk: varmt papper, kolsvart och solgult, tydliga kanter och "tryckta" skuggor. */
+/* Hundappen – formspråk: varmt papper, kolsvart och solgult. Mjuka ytor utan kanter, svaga skuggor. */
 
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -14,7 +14,7 @@
   --sunken: #efe7d3;
   --text: #141414;
   --muted: #6b6253;
-  --ink: #141414; /* kanter och skuggor */
+  --ink: #141414;
   --accent: #ffc81e; /* solgult */
   --accent-strong: #f2b400;
   --on-accent: #141414;
@@ -23,8 +23,10 @@
   --success: #1d7a46;
   --danger: #c0392b;
   --danger-bg: #fdecea;
-  --shadow: 3px 3px 0 var(--ink);
-  --radius: 18px;
+  /* Mjuk skugga för kort och knappar; gul glöd för huvudknappar. */
+  --shadow: 0 1px 2px rgba(20, 20, 20, 0.05), 0 6px 20px rgba(20, 20, 20, 0.06);
+  --shadow-accent: 0 1px 2px rgba(20, 20, 20, 0.06), 0 6px 18px rgba(242, 180, 0, 0.28);
+  --radius: 22px;
   --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   color-scheme: light dark;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -44,7 +46,8 @@
     --success: #7ed3a0;
     --danger: #ff8a7a;
     --danger-bg: #3a1f1c;
-    --shadow: 3px 3px 0 #000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 20px rgba(0, 0, 0, 0.35);
+    --shadow-accent: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(255, 200, 30, 0.18);
   }
 }
 
@@ -68,13 +71,12 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
 .page > * + *, .with-tabbar > * + * { margin-top: 16px; }
 
 .app-header { display: flex; align-items: center; gap: 10px; padding: 4px 2px; }
-.app-header img { width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--ink); }
+.app-header img { width: 36px; height: 36px; border-radius: 10px; }
 .app-header h1 { margin: 0; font-size: 22px; font-weight: 800; }
 
 /* Kort */
 .card {
   background: var(--surface);
-  border: 2px solid var(--ink);
   border-radius: var(--radius);
   padding: 16px;
   box-shadow: var(--shadow);
@@ -142,23 +144,21 @@ button {
 }
 button:disabled { opacity: 0.5; cursor: default; }
 button.primary, button.secondary, .log-button {
-  border: 2px solid var(--ink);
   box-shadow: var(--shadow);
   font-weight: 700;
-  transition: transform 0.06s, box-shadow 0.06s;
+  transition: transform 0.08s, box-shadow 0.08s;
 }
-button.primary { background: var(--accent); color: var(--on-accent); }
+button.primary { background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow-accent); }
 button.secondary { background: var(--surface); color: var(--text); }
 button.primary:active:not(:disabled), button.secondary:active:not(:disabled), .log-button:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 var(--ink);
+  transform: scale(0.97);
 }
 button.link { background: none; color: var(--link); padding: 6px 0; font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 button.link.left { text-align: left; }
 button.link.danger { color: var(--danger); }
 button.small { font-size: 14px; padding: 2px 0; }
 button.full { width: 100%; }
-button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--ink); box-shadow: var(--shadow); font-weight: 700; }
+button.danger-solid { background: #c0392b; color: #fff; box-shadow: var(--shadow); font-weight: 700; }
 .row { display: flex; justify-content: space-between; gap: 12px; }
 
 /* Status (teknik) */
@@ -169,7 +169,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .photo-picker { display: flex; align-items: center; gap: 16px; }
 .photo-circle {
   width: 96px; height: 96px; border-radius: 50%; padding: 0; overflow: hidden; flex-shrink: 0;
-  background: var(--sunken); border: 2px dashed var(--ink); font-size: 32px;
+  background: var(--sunken); border: 1.5px dashed var(--border); font-size: 32px;
   display: flex; align-items: center; justify-content: center;
 }
 .photo-circle img, .dog-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -177,7 +177,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .dog-card { display: flex; align-items: center; gap: 14px; }
 .dog-photo {
   width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-  background: var(--accent); border: 2px solid var(--ink);
+  background: var(--accent);
   display: flex; align-items: center; justify-content: center; font-size: 32px;
 }
 .dog-info { flex: 1; min-width: 0; }
@@ -189,7 +189,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .invite-code {
   font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: 0.1em; text-align: center;
   font-variant-numeric: tabular-nums; margin: 8px 0; padding: 8px; border-radius: 12px;
-  background: var(--accent); color: var(--on-accent); border: 2px solid var(--ink);
+  background: var(--accent); color: var(--on-accent);
 }
 .invite-banner h2 { margin-bottom: 6px; }
 .invite-banner p { margin: 0; }
@@ -197,13 +197,13 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .members li { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .avatar {
   width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--on-accent);
-  border: 2px solid var(--ink); display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0;
 }
 .member-name { flex: 1; }
 .tag {
   font-size: 13px; padding: 2px 8px; border-radius: 999px; background: var(--sunken); color: var(--muted); font-weight: 600;
 }
-.invite-box { margin-top: 16px; padding-top: 16px; border-top: 2px dashed var(--border); display: flex; flex-direction: column; gap: 8px; }
+.invite-box { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
 .invite-box h3 { margin: 0; font-size: 17px; }
 .invite-box p { margin: 0; }
 
@@ -230,10 +230,11 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
   background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-weight: 800; font-size: 21px;
   padding: 18px 8px; border-radius: var(--radius); display: flex; flex-direction: column; align-items: center; gap: 4px;
 }
-.log-button + .log-button { background: var(--surface); color: var(--text); }
+.log-button { box-shadow: var(--shadow-accent); }
+.log-button + .log-button { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
 .log-button span { font-size: 36px; }
 .latest { display: flex; flex-direction: column; gap: 2px; }
-.latest + .latest { margin-top: 14px; padding-top: 14px; border-top: 2px dashed var(--border); }
+.latest + .latest { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
 .latest-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
 .latest-time { font-family: var(--font-display); font-size: 26px; font-weight: 800; }
 .latest-time .muted { font-family: inherit; font-size: 16px; font-weight: 500; }
@@ -247,7 +248,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
   background: var(--surface); width: 100%; max-width: 560px; max-height: 92dvh;
   /* Bara lodrät skrollning i panelen, aldrig i sidled. */
   overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; touch-action: pan-y;
-  border: 2px solid var(--ink); border-bottom: none; border-radius: 22px 22px 0 0;
+  border-radius: 24px 24px 0 0; box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.12);
   padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
   display: flex; flex-direction: column; gap: 12px;
 }
@@ -262,16 +263,16 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .chip {
   flex: 1; background: var(--bg); color: var(--text); border: 2px solid var(--border); font-weight: 700; padding: 14px 8px;
 }
-.chip.on { border-color: var(--ink); background: var(--accent); color: var(--on-accent); box-shadow: var(--shadow); }
+.chip.on { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
 .log-photo { display: flex; align-items: center; gap: 12px; }
-.log-photo img { width: 96px; height: 96px; object-fit: cover; border-radius: 12px; border: 2px solid var(--ink); }
-.photo-full { width: 100%; border-radius: 12px; border: 2px solid var(--ink); }
+.log-photo img { width: 96px; height: 96px; object-fit: cover; border-radius: 12px; }
+.photo-full { width: 100%; border-radius: 12px; }
 
 /* Historik */
 .day-title { text-transform: capitalize; }
 .events { list-style: none; margin: 0; padding: 0; }
 .event { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; }
-.event + .event { border-top: 2px dashed var(--border); }
+.event + .event { border-top: 1px solid var(--border); }
 .event-icon { font-size: 22px; line-height: 1.3; }
 .event-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
 .event-head { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -281,7 +282,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .tags .tag { white-space: nowrap; }
 .event-thumb {
   padding: 0; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
-  background: none; border: 2px solid var(--ink);
+  background: none;
 }
 .event-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -292,7 +293,7 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
   width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; background: var(--sunken);
   display: flex; align-items: center; justify-content: center; color: #0a84ff; font-weight: 700; font-size: 18px;
 }
-img.step-icon { padding: 0; border: 2px solid var(--ink); }
+img.step-icon { padding: 0; }
 
 /* Notiser och inställningar */
 .setting-row, .toggle-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
@@ -302,13 +303,13 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 /* Schema */
 .segmented { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; background: var(--sunken); padding: 4px; border-radius: 14px; }
 .segmented button { background: none; padding: 10px 6px; font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
-.segmented button.on { background: var(--accent); color: var(--on-accent); border: 2px solid var(--ink); }
+.segmented button.on { background: var(--accent); color: var(--on-accent); box-shadow: 0 1px 3px rgba(20, 20, 20, 0.12); }
 .day-picker { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .day-picker button { padding: 10px 0; font-size: 14px; background: var(--bg); border: 2px solid var(--border); font-weight: 600; }
-.day-picker button.on { background: var(--accent); border-color: var(--ink); color: var(--on-accent); font-weight: 800; }
+.day-picker button.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 800; }
 .presets { justify-content: flex-start; gap: 16px; }
 .schedule-list { list-style: none; margin: 0 0 16px; padding: 0; }
-.schedule-list li + li { border-top: 2px dashed var(--border); }
+.schedule-list li + li { border-top: 1px solid var(--border); }
 .schedule-row { width: 100%; display: flex; align-items: center; gap: 14px; background: none; padding: 12px 0; text-align: left; border-radius: 0; }
 .schedule-row.inactive { opacity: 0.5; }
 .schedule-time { font-family: var(--font-display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; min-width: 72px; }
@@ -319,7 +320,7 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 /* Idag */
 .today-list { list-style: none; margin: 0; padding: 0; }
 .today-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
-.today-item + .today-item { border-top: 2px dashed var(--border); }
+.today-item + .today-item { border-top: 1px solid var(--border); }
 .today-item.done { opacity: 0.55; }
 .today-time { font-family: var(--font-display); font-weight: 800; font-variant-numeric: tabular-nums; min-width: 56px; font-size: 20px; }
 .today-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
@@ -328,7 +329,7 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
   background: var(--sunken); color: var(--muted); border: 2px solid transparent;
 }
 .status-badge.done { color: var(--success); font-size: 16px; background: none; }
-.today-item.next .status-badge, .status-badge.due { background: var(--accent); color: var(--on-accent); border-color: var(--ink); }
+.today-item.next .status-badge, .status-badge.due { background: var(--accent); color: var(--on-accent); }
 .status-badge.missed { background: var(--danger-bg); color: var(--danger); }
 .next-line { margin: 10px 0 0; }
 
@@ -340,8 +341,7 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 /* Bilder */
 .photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
 .photo-tile {
-  padding: 0; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--sunken);
-  border: 2px solid var(--ink);
+  padding: 0; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--sunken);
 }
 .photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .viewer { display: flex; flex-direction: column; gap: 6px; }
@@ -355,7 +355,7 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 
 /* Varning, kvitto och väntande loggar */
 .warning-box {
-  background: var(--accent); color: var(--on-accent); border: 2px solid var(--ink);
+  background: var(--accent); color: var(--on-accent);
   border-radius: 12px; padding: 10px 12px; font-weight: 600;
 }
 .toast {
@@ -379,9 +379,9 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 /* Väder i sidhuvudet */
 .weather-badge {
   margin-left: auto; display: inline-flex; align-items: center; gap: 4px;
-  background: var(--surface); color: var(--text); border: 2px solid var(--ink); border-radius: 999px;
+  background: var(--surface); color: var(--text); border-radius: 999px; box-shadow: var(--shadow);
   padding: 4px 12px; font-family: var(--font-display); font-weight: 800; font-size: 17px;
   font-variant-numeric: tabular-nums;
 }
-.weather-badge.off { font-family: inherit; font-weight: 600; font-size: 15px; color: var(--muted); border-style: dashed; }
+.weather-badge.off { font-family: inherit; font-weight: 600; font-size: 15px; color: var(--muted); }
 .weather-badge.loading { opacity: 0.6; }

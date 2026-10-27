@@ -44,7 +44,7 @@
 - Integritetstext i appen (Integritet-länk på inloggningen och under Familjen → Konto).
 
 ## Utseende
-- Gul (#FFC81E) och svart (#141414) på varmt papper, tydliga kanter och "tryckta" skuggor.
+- Gul (#FFC81E) och svart (#141414) på varmt papper. Mjuka ytor utan kanter och svaga skuggor (variant A, vald 27 okt).
 - Rubriktypsnitt Bricolage Grotesque (SIL OFL), lokalt i src/assets/fonts.
 
 ## Förbättringar (27 oktober)
