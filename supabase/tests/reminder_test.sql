@@ -83,7 +83,35 @@ insert into public.events (household_id, dog_id, type, logged_by, occurred_at)
   select hid, did, 'walk', '00000000-0000-0000-0000-00000000000b', now() - interval '50 minutes' from t;
 select pg_temp.check('rastning för länge sedan stoppar inte', (select count(*) from public.claim_due_reminders()) = 1);
 
+-- Lång promenad i schemat: kort rastning räknas inte, lång gör det.
+delete from public.reminder_log;
+delete from public.events;
+update public.schedules set walk_length = 'long' where id = '30000000-0000-0000-0000-000000000001';
+insert into public.events (household_id, dog_id, type, walk_length, logged_by, occurred_at)
+  select hid, did, 'walk', 'short', '00000000-0000-0000-0000-00000000000b', now() - interval '10 minutes' from t;
+create temp table long_claim as select * from public.claim_due_reminders();
+select pg_temp.check('kort rastning stoppar inte påminnelse om lång promenad',
+  (select count(*) = 1 and bool_and(walk_length = 'long') from long_claim));
+delete from public.reminder_log;
+insert into public.events (household_id, dog_id, type, walk_length, logged_by, occurred_at)
+  select hid, did, 'walk', 'long', '00000000-0000-0000-0000-00000000000b', now() - interval '5 minutes' from t;
+select pg_temp.check('lång promenad stoppar påminnelse om lång promenad', (select count(*) from public.claim_due_reminders()) = 0);
+
+-- Kort rastning i schemat: lång promenad räknas också.
+delete from public.reminder_log;
+delete from public.events where walk_length = 'short';
+update public.schedules set walk_length = 'short' where id = '30000000-0000-0000-0000-000000000001';
+select pg_temp.check('lång promenad räknas för kort rastning', (select count(*) from public.claim_due_reminders()) = 0);
+
+do $$ begin
+  insert into public.events (household_id, dog_id, type, walk_length)
+    select hid, did, 'meal', 'long' from t;
+  raise exception 'FEL: mat fick längd';
+exception when check_violation then raise notice 'OK: bara rastningar har längd';
+end $$;
+
 -- trigger_reminders anropar funktionen bara när något väntar.
+delete from public.events;
 delete from net.calls;
 select public.trigger_reminders();
 select pg_temp.check('inget väntar: inget anrop', (select count(*) from net.calls) = 0);

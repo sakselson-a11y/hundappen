@@ -29,8 +29,9 @@ export default function EventItem({ event, canDelete, onDelete }: Props) {
           <strong>{formatTime(event.occurred_at, i18n.language)}</strong>
           <span>{event.type === 'walk' ? t('history.walkBy', { name: who }) : t('history.mealBy', { name: who })}</span>
         </div>
-        {(event.pee || event.poop) && (
+        {(event.walk_length || event.pee || event.poop) && (
           <div className="tags">
+            {event.walk_length && <span className="tag">{t(`walk.${event.walk_length}`)}</span>}
             {event.pee && <span className="tag">💧 {t('log.pee')}</span>}
             {event.poop && <span className="tag">💩 {t('log.poop')}</span>}
           </div>

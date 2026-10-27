@@ -6,7 +6,8 @@ import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { useSchedules } from '../household/SchedulesProvider.tsx'
 import { dayShort } from '../lib/scheduleText.ts'
 import Sheet from './Sheet.tsx'
-import type { Dog, EventType, Schedule } from '../lib/types.ts'
+import WalkLengthPicker from './WalkLengthPicker.tsx'
+import type { Dog, EventType, Schedule, WalkLength } from '../lib/types.ts'
 
 const REMIND_OPTIONS = [0, 5, 10, 15, 30, 60]
 const SKIP_OPTIONS = [30, 60, 90, 120]
@@ -28,6 +29,7 @@ export default function ScheduleSheet({ dog, schedule, onClose }: Props) {
   const { members } = useHousehold()
   const { reload } = useSchedules()
   const [type, setType] = useState<EventType>(schedule?.type ?? 'walk')
+  const [walkLength, setWalkLength] = useState<WalkLength>(schedule?.walk_length ?? 'short')
   const [time, setTime] = useState(schedule?.local_time.slice(0, 5) ?? '07:00')
   const [days, setDays] = useState<number[]>(schedule?.days_of_week ?? PRESETS.everyDay)
   const [responsible, setResponsible] = useState(schedule?.responsible_user_id ?? '')
@@ -51,6 +53,7 @@ export default function ScheduleSheet({ dog, schedule, onClose }: Props) {
     setError(null)
     const row = {
       type,
+      walk_length: type === 'walk' ? walkLength : null,
       local_time: time,
       days_of_week: days,
       responsible_user_id: responsible || null,
@@ -99,6 +102,8 @@ export default function ScheduleSheet({ dog, schedule, onClose }: Props) {
             </button>
           ))}
         </div>
+
+        {type === 'walk' && <WalkLengthPicker value={walkLength} onChange={setWalkLength} />}
 
         <label>
           <span>{t('schedule.time')}</span>

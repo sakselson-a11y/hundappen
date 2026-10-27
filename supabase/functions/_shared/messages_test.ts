@@ -3,6 +3,7 @@ import { eventMessage, reminderMessage, type EventInfo } from './messages.ts'
 
 const base: EventInfo = {
   type: 'walk',
+  walkLength: null,
   occurredAt: '2026-10-26T14:40:00Z',
   createdAt: '2026-10-26T14:40:05Z',
   pee: null,
@@ -11,10 +12,15 @@ const base: EventInfo = {
   hasPhoto: false,
 }
 
-Deno.test('rastning med kiss och bajs och kommentar', () => {
+Deno.test('lång promenad med nummer 1 och 2 och kommentar', () => {
   assertEquals(
-    eventMessage({ ...base, pee: true, poop: true, note: 'Träffade grannens hund' }, 'Ester', 'Tucci', 'Europe/Stockholm'),
-    { title: '🦮 Ester har rastat Tucci', body: 'Kiss och bajs · Träffade grannens hund' },
+    eventMessage(
+      { ...base, walkLength: 'long', pee: true, poop: true, note: 'Träffade grannens hund' },
+      'Ester',
+      'Tucci',
+      'Europe/Stockholm',
+    ),
+    { title: '🦮 Ester har rastat Tucci', body: 'Lång promenad · Nummer 1 och 2 · Träffade grannens hund' },
   )
 })
 
@@ -32,7 +38,7 @@ Deno.test('loggat i efterhand visar lokal tid', () => {
     'Tucci',
     'Europe/Stockholm',
   )
-  assertEquals(msg.body, 'kl. 13:10 · Kiss · 📷')
+  assertEquals(msg.body, 'kl. 13:10 · Nummer 1 · 📷')
 })
 
 Deno.test('sommartid räknas rätt', () => {
@@ -46,22 +52,22 @@ Deno.test('sommartid räknas rätt', () => {
 })
 
 Deno.test('påminnelse till andra än den ansvariga', () => {
-  assertEquals(reminderMessage('walk', 'Tucci', 15, 'Ester', false), {
+  assertEquals(reminderMessage('walk', 'long', 'Tucci', 15, 'Ester', false), {
     title: '🦮 Tucci ska ut om 15 minuter',
-    body: 'Ester har turen',
+    body: 'Lång promenad · Ester har turen',
   })
 })
 
 Deno.test('påminnelse till den ansvariga', () => {
-  assertEquals(reminderMessage('meal', 'Tucci', 10, 'Ester', true), {
+  assertEquals(reminderMessage('meal', null, 'Tucci', 10, 'Ester', true), {
     title: '🍖 Tucci ska äta om 10 minuter',
     body: 'Det är din tur 🐾',
   })
 })
 
 Deno.test('påminnelse vid tiden utan ansvarig', () => {
-  assertEquals(reminderMessage('walk', 'Tucci', 0, null, false), {
+  assertEquals(reminderMessage('walk', 'short', 'Tucci', 0, null, false), {
     title: '🦮 Dags att gå ut med Tucci',
-    body: 'Vem tar det?',
+    body: 'Kort rastning · Vem tar det?',
   })
 })

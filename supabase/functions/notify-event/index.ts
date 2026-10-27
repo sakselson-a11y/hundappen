@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
     .eq('id', event_id)
     .is('notified_at', null)
     .gt('created_at', new Date(Date.now() - 10 * 60 * 1000).toISOString())
-    .select('id, household_id, dog_id, type, occurred_at, created_at, logged_by, pee, poop, note, photo_path')
+    .select('id, household_id, dog_id, type, walk_length, occurred_at, created_at, logged_by, pee, poop, note, photo_path')
     .maybeSingle()
   if (error) return json({ error: 'db' }, 500)
   if (!event) return json({ skipped: true })
@@ -47,6 +47,7 @@ Deno.serve(async (req) => {
   const { title, body } = eventMessage(
     {
       type: event.type,
+      walkLength: event.walk_length,
       occurredAt: event.occurred_at,
       createdAt: event.created_at,
       pee: event.pee,

@@ -5,6 +5,7 @@ import { useSchedules } from '../household/SchedulesProvider.tsx'
 import { matchingEvent, nextOccurrence, occurrencesOnDay, occurrenceStatus, todayInZone } from '../lib/schedule.ts'
 import { formatTime, useNow } from '../lib/time.ts'
 import type { Dog } from '../lib/types.ts'
+import { activityLabel } from '../lib/labels.ts'
 
 // Dagens schema med status, plus nästa tillfälle om inget återstår idag.
 export default function TodayCard({ dog, onOpenSchedule }: { dog: Dog; onOpenSchedule: () => void }) {
@@ -48,7 +49,7 @@ export default function TodayCard({ dog, onOpenSchedule }: { dog: Dog; onOpenSch
               <span className="today-time">{formatTime(occ.at.toISOString(), i18n.language)}</span>
               <span className="today-info">
                 <strong>
-                  {occ.schedule.type === 'walk' ? `🦮 ${t('overview.logWalk')}` : `🍖 ${t('overview.logMeal')}`}
+                  {activityLabel(t, occ.schedule.type, occ.schedule.walk_length)}
                 </strong>
                 <span className="muted small">
                   {done
@@ -71,7 +72,7 @@ export default function TodayCard({ dog, onOpenSchedule }: { dog: Dog; onOpenSch
       {restOfDayEmpty && upcoming && (
         <p className="muted small next-line">
           {t('today.nextLater', {
-            what: upcoming.schedule.type === 'walk' ? t('overview.logWalk').toLowerCase() : t('overview.logMeal').toLowerCase(),
+            what: activityLabel(t, upcoming.schedule.type, upcoming.schedule.walk_length, false).toLowerCase(),
             when: `${relativeDay(t, upcoming.at, now, i18n.language)} ${formatTime(upcoming.at.toISOString(), i18n.language)}`,
           })}
         </p>

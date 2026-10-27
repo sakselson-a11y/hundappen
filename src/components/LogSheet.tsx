@@ -6,12 +6,14 @@ import { toLocalInputValue } from '../lib/time.ts'
 import { useAuth } from '../auth/AuthProvider.tsx'
 import { useEvents } from '../household/EventsProvider.tsx'
 import Sheet from './Sheet.tsx'
-import type { Dog, DogEvent, EventType } from '../lib/types.ts'
+import WalkLengthPicker from './WalkLengthPicker.tsx'
+import type { Dog, DogEvent, EventType, WalkLength } from '../lib/types.ts'
 
 export default function LogSheet({ dog, type, onClose }: { dog: Dog; type: EventType; onClose: () => void }) {
   const { t } = useTranslation()
   const { session } = useAuth()
   const { addLocal } = useEvents()
+  const [walkLength, setWalkLength] = useState<WalkLength>('short')
   const [pee, setPee] = useState(false)
   const [poop, setPoop] = useState(false)
   const [note, setNote] = useState('')
@@ -62,6 +64,7 @@ export default function LogSheet({ dog, type, onClose }: { dog: Dog; type: Event
       household_id: dog.household_id,
       dog_id: dog.id,
       type,
+      walk_length: isWalk ? walkLength : null,
       occurred_at: occurredAt.toISOString(),
       logged_by: session.user.id,
       pee: isWalk ? pee : null,
@@ -83,6 +86,8 @@ export default function LogSheet({ dog, type, onClose }: { dog: Dog; type: Event
     <Sheet onClose={onClose}>
       <form className="form" onSubmit={save}>
         <h2>{isWalk ? t('log.walkTitle', { dog: dog.name }) : t('log.mealTitle', { dog: dog.name })}</h2>
+
+        {isWalk && <WalkLengthPicker value={walkLength} onChange={setWalkLength} />}
 
         {isWalk && (
           <div className="chips">

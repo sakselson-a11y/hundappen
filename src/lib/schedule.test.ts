@@ -10,6 +10,7 @@ function schedule(over: Partial<Schedule> = {}): Schedule {
     household_id: 'h',
     dog_id: 'd',
     type: 'walk',
+    walk_length: 'short',
     local_time: '07:00:00',
     days_of_week: [1, 2, 3, 4, 5, 6, 7],
     responsible_user_id: null,
@@ -22,8 +23,8 @@ function schedule(over: Partial<Schedule> = {}): Schedule {
   }
 }
 
-function event(at: string, type: DogEvent['type'] = 'walk'): DogEvent {
-  return { id: at, household_id: 'h', dog_id: 'd', type, occurred_at: at, logged_by: 'u', pee: null, poop: null, note: null, photo_path: null, created_at: at }
+function event(at: string, type: DogEvent['type'] = 'walk', walk_length: DogEvent['walk_length'] = 'short'): DogEvent {
+  return { id: at, household_id: 'h', dog_id: 'd', type, walk_length: type === 'walk' ? walk_length : null, occurred_at: at, logged_by: 'u', pee: null, poop: null, note: null, photo_path: null, created_at: at }
 }
 
 describe('zonedTime', () => {
@@ -93,6 +94,17 @@ describe('status', () => {
   })
   it('fel typ räknas inte', () => {
     expect(matchingEvent(occ, [event('2026-11-02T05:50:00Z', 'meal')])).toBeUndefined()
+  })
+  it('lång promenad räknas för kort rastning, inte tvärtom', () => {
+    const longOcc = { schedule: schedule({ walk_length: 'long' }), at: occ.at }
+    expect(matchingEvent(occ, [event('2026-11-02T05:50:00Z', 'walk', 'long')])).toBeDefined()
+    expect(matchingEvent(longOcc, [event('2026-11-02T05:50:00Z', 'walk', 'short')])).toBeUndefined()
+    expect(matchingEvent(longOcc, [event('2026-11-02T05:50:00Z', 'walk', 'long')])).toBeDefined()
+  })
+  it('äldre rastning utan längd räknas som kort', () => {
+    const longOcc = { schedule: schedule({ walk_length: 'long' }), at: occ.at }
+    expect(matchingEvent(occ, [event('2026-11-02T05:50:00Z', 'walk', null)])).toBeDefined()
+    expect(matchingEvent(longOcc, [event('2026-11-02T05:50:00Z', 'walk', null)])).toBeUndefined()
   })
   it('kommande, aktuell och missad', () => {
     expect(occurrenceStatus(occ, [], new Date('2026-11-02T05:00:00Z'))).toBe('upcoming')

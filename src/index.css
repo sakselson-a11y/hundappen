@@ -261,7 +261,8 @@ button.danger-solid { background: #c0392b; color: #fff; border: 2px solid var(--
 .event-head { display: flex; gap: 8px; flex-wrap: wrap; }
 .event-head strong { font-variant-numeric: tabular-nums; }
 .event-note { margin: 0; color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
-.tags { display: flex; gap: 6px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags .tag { white-space: nowrap; }
 .event-thumb {
   padding: 0; width: 56px; height: 56px; border-radius: 10px; overflow: hidden; flex-shrink: 0;
   background: none; border: 2px solid var(--ink);

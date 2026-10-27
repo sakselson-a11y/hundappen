@@ -131,8 +131,8 @@
   "log": {
     "walkTitle": "Rastning av {{dog}}",
     "mealTitle": "Mat till {{dog}}",
-    "pee": "Kiss",
-    "poop": "Bajs",
+    "pee": "Nummer 1",
+    "poop": "Nummer 2",
     "note": "Kommentar",
     "addPhoto": "Lägg till foto",
     "now": "Nu",
@@ -313,5 +313,10 @@
       }
     ],
     "updated": "Senast uppdaterad 26 oktober 2026."
+  },
+  "walk": {
+    "lengthLabel": "Längd",
+    "short": "Kort rastning",
+    "long": "Lång promenad"
   }
 }

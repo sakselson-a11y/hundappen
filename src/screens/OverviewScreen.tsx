@@ -24,6 +24,7 @@ function LatestRow({ label, event }: { label: string; event: DogEvent | undefine
           </span>
           <span className="muted small">
             {memberName(event.logged_by) ?? t('history.formerMember')}
+            {event.walk_length && ` · ${t(`walk.${event.walk_length}`)}`}
             {event.pee && ` · 💧 ${t('log.pee')}`}
             {event.poop && ` · 💩 ${t('log.poop')}`}
           </span>

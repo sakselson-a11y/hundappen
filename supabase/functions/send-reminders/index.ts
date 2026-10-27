@@ -11,6 +11,7 @@ interface DueReminder {
   household_id: string
   dog_name: string
   type: 'walk' | 'meal'
+  walk_length: 'short' | 'long' | null
   responsible_user_id: string | null
   responsible_name: string | null
   minutes_before: number
@@ -49,7 +50,7 @@ Deno.serve(async (req) => {
       groups.set(isResponsible, [...(groups.get(isResponsible) ?? []), sub])
     }
     for (const [isResponsible, group] of groups) {
-      const { title, body } = reminderMessage(r.type, r.dog_name, r.minutes_before, r.responsible_name, isResponsible)
+      const { title, body } = reminderMessage(r.type, r.walk_length, r.dog_name, r.minutes_before, r.responsible_name, isResponsible)
       const result = await sendPush(admin, group, {
         title,
         body,

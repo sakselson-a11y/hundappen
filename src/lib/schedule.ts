@@ -94,13 +94,21 @@ export function nextOccurrence(
 
 export type OccurrenceStatus = 'done' | 'upcoming' | 'due' | 'missed'
 
+// Samma regel som public.event_satisfies i databasen: en lång promenad räknas även för en
+// schemalagd kort rastning, men en kort rastning räknas inte för en lång promenad.
+export function eventSatisfies(schedule: Schedule, event: DogEvent): boolean {
+  if (schedule.type !== event.type) return false
+  if (schedule.type !== 'walk') return true
+  return (schedule.walk_length ?? 'short') === 'short' || event.walk_length === 'long'
+}
+
 // En logg räknas för tillfället om den skett från (tid − skip_window) till (tid + 2 tim).
 export function matchingEvent(occ: Occurrence, events: DogEvent[]): DogEvent | undefined {
   const from = occ.at.getTime() - occ.schedule.skip_window_minutes * 60000
   const to = occ.at.getTime() + GRACE_AFTER_MINUTES * 60000
   return events.find((e) => {
     const t = new Date(e.occurred_at).getTime()
-    return e.type === occ.schedule.type && e.dog_id === occ.schedule.dog_id && t >= from && t <= to
+    return eventSatisfies(occ.schedule, e) && e.dog_id === occ.schedule.dog_id && t >= from && t <= to
   })
 }
 

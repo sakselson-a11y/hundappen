@@ -42,12 +42,14 @@ export interface Member {
 }
 
 export type EventType = 'walk' | 'meal'
+export type WalkLength = 'short' | 'long'
 
 export interface DogEvent {
   id: string
   household_id: string
   dog_id: string
   type: EventType
+  walk_length: WalkLength | null
   occurred_at: string
   logged_by: string | null
   pee: boolean | null
@@ -62,6 +64,7 @@ export interface Schedule {
   household_id: string
   dog_id: string
   type: EventType
+  walk_length: WalkLength | null
   local_time: string // "07:00:00"
   days_of_week: number[] // 1 = måndag … 7 = söndag
   responsible_user_id: string | null

@@ -4,6 +4,7 @@ import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { useSchedules } from '../household/SchedulesProvider.tsx'
 import { daysText } from '../lib/scheduleText.ts'
 import ScheduleSheet from '../components/ScheduleSheet.tsx'
+import { activityLabel } from '../lib/labels.ts'
 import type { Dog, Schedule } from '../lib/types.ts'
 
 export default function ScheduleScreen({ dog }: { dog: Dog }) {
@@ -32,7 +33,7 @@ export default function ScheduleScreen({ dog }: { dog: Dog }) {
                     <span className="schedule-time">{s.local_time.slice(0, 5)}</span>
                     <span className="schedule-info">
                       <strong>
-                        {s.type === 'walk' ? `🦮 ${t('overview.logWalk')}` : `🍖 ${t('overview.logMeal')}`}
+                        {activityLabel(t, s.type, s.walk_length)}
                         {!s.active && <span className="tag">{t('schedule.paused')}</span>}
                       </strong>
                       <span className="muted small">

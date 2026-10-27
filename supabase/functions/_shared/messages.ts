@@ -2,6 +2,7 @@
 
 export interface EventInfo {
   type: 'walk' | 'meal'
+  walkLength: 'short' | 'long' | null
   occurredAt: string
   createdAt: string
   pee: boolean | null
@@ -14,7 +15,13 @@ function formatTime(iso: string, timeZone: string): string {
   return new Date(iso).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', timeZone })
 }
 
-// Ex: { title: "🦮 Ester har rastat Tucci", body: "Kiss och bajs · Träffade grannens hund" }
+export function walkLengthText(length: 'short' | 'long' | null): string | null {
+  if (length === 'long') return 'Lång promenad'
+  if (length === 'short') return 'Kort rastning'
+  return null
+}
+
+// Ex: { title: "🦮 Ester har rastat Tucci", body: "Lång promenad · Nummer 1 och 2 · Träffade grannens hund" }
 export function eventMessage(
   event: EventInfo,
   who: string,
@@ -28,9 +35,11 @@ export function eventMessage(
   const lateMinutes = (new Date(event.createdAt).getTime() - new Date(event.occurredAt).getTime()) / 60000
   if (lateMinutes > 10) parts.push(`kl. ${formatTime(event.occurredAt, timeZone)}`)
   if (event.type === 'walk') {
-    if (event.pee && event.poop) parts.push('Kiss och bajs')
-    else if (event.pee) parts.push('Kiss')
-    else if (event.poop) parts.push('Bajs')
+    const length = walkLengthText(event.walkLength)
+    if (length) parts.push(length)
+    if (event.pee && event.poop) parts.push('Nummer 1 och 2')
+    else if (event.pee) parts.push('Nummer 1')
+    else if (event.poop) parts.push('Nummer 2')
   }
   if (event.note) parts.push(event.note.length > 120 ? `${event.note.slice(0, 117)}…` : event.note)
   if (event.hasPhoto) parts.push('📷')
@@ -38,9 +47,10 @@ export function eventMessage(
   return { title, body: parts.join(' · ') }
 }
 
-// Ex: { title: "🦮 Tucci ska ut om 15 minuter", body: "Ester har turen" }
+// Ex: { title: "🦮 Tucci ska ut om 15 minuter", body: "Lång promenad · Ester har turen" }
 export function reminderMessage(
   type: 'walk' | 'meal',
+  walkLength: 'short' | 'long' | null,
   dog: string,
   minutesBefore: number,
   responsibleName: string | null,
@@ -56,10 +66,11 @@ export function reminderMessage(
       : type === 'walk'
         ? `${icon} Dags att gå ut med ${dog}`
         : `${icon} Dags för ${dog}s mat`
-  const body = recipientIsResponsible
+  const turn = recipientIsResponsible
     ? 'Det är din tur 🐾'
     : responsibleName
       ? `${responsibleName} har turen`
       : 'Vem tar det?'
-  return { title, body }
+  const length = type === 'walk' ? walkLengthText(walkLength) : null
+  return { title, body: length ? `${length} · ${turn}` : turn }
 }
