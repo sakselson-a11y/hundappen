@@ -70,10 +70,6 @@ h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
 .app-header { display: flex; align-items: center; gap: 10px; padding: 4px 2px; }
 .app-header img { width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--ink); }
 .app-header h1 { margin: 0; font-size: 22px; font-weight: 800; }
-.app-header .stripe {
-  margin-left: auto; height: 10px; flex: 0 0 56px; border-radius: 3px;
-  background: repeating-linear-gradient(-45deg, var(--ink) 0 6px, var(--accent) 6px 12px);
-}
 
 /* Kort */
 .card {
