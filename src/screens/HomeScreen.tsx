@@ -4,6 +4,7 @@ import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { EventsProvider } from '../household/EventsProvider.tsx'
 import { SchedulesProvider } from '../household/SchedulesProvider.tsx'
 import ScheduleScreen from './ScheduleScreen.tsx'
+import PhotosScreen from './PhotosScreen.tsx'
 import TabBar, { type Tab } from '../components/TabBar.tsx'
 import CreateDogScreen from './CreateDogScreen.tsx'
 import EditDogScreen from './EditDogScreen.tsx'
@@ -47,6 +48,7 @@ export default function HomeScreen() {
             <OverviewScreen dog={dog} onEditDog={() => setEditing(true)} onOpenSchedule={() => changeTab('schedule')} />
           )}
           {tab === 'history' && <HistoryScreen />}
+          {tab === 'photos' && <PhotosScreen />}
           {tab === 'schedule' && <ScheduleScreen dog={dog} />}
           {tab === 'family' && <FamilyScreen dog={dog} />}
         </div>

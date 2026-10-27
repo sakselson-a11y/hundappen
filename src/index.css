@@ -340,3 +340,19 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 .danger-zone { border-color: var(--danger); }
 .danger-zone h2 { color: var(--danger); }
 .footer-links { display: flex; justify-content: center; gap: 20px; }
+
+/* Bilder */
+.photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.photo-tile {
+  padding: 0; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--sunken);
+  border: 2px solid var(--ink);
+}
+.photo-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.viewer { display: flex; flex-direction: column; gap: 6px; }
+.viewer .photo-full { max-height: 62dvh; object-fit: contain; background: #000; -webkit-touch-callout: default; }
+.photo-full.placeholder { aspect-ratio: 1; }
+.viewer-caption { margin: 4px 0 0; font-weight: 600; }
+.viewer p { margin: 0; }
+.viewer-nav { display: grid; grid-template-columns: 64px 1fr 64px; align-items: center; text-align: center; }
+.viewer-nav button { font-size: 28px; line-height: 1; padding: 8px 0; }
+.tabbar button { max-width: 112px; padding-left: 2px; padding-right: 2px; }

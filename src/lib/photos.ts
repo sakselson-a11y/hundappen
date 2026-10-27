@@ -42,24 +42,52 @@ export async function deleteDogPhoto(path: string): Promise<void> {
   await supabase.storage.from(BUCKET).remove([path])
 }
 
-// Fotona är privata, så de visas via en tillfällig signerad adress.
-export function usePhotoUrl(path: string | null): string | null {
-  const [url, setUrl] = useState<string | null>(null)
+// Fotona är privata, så de visas via tillfälliga signerade adresser (giltiga en timme).
+// Adresserna sparas en stund så att samma foto inte behöver hämtas igen.
+const URL_TTL_SECONDS = 60 * 60
+const cache = new Map<string, { url: string; expires: number }>()
+
+function cached(path: string): string | null {
+  const hit = cache.get(path)
+  return hit && hit.expires > Date.now() ? hit.url : null
+}
+
+async function signUrls(paths: string[]): Promise<void> {
+  const missing = [...new Set(paths)].filter((p) => !cached(p))
+  for (let i = 0; i < missing.length; i += 100) {
+    const { data } = await supabase.storage.from(BUCKET).createSignedUrls(missing.slice(i, i + 100), URL_TTL_SECONDS)
+    // Lite marginal så att en adress inte hinner gå ut medan bilden visas.
+    const expires = Date.now() + (URL_TTL_SECONDS - 300) * 1000
+    for (const item of data ?? []) {
+      if (item.path && item.signedUrl) cache.set(item.path, { url: item.signedUrl, expires })
+    }
+  }
+}
+
+// Adresser för många foton på en gång (t.ex. bildrutnätet).
+export function usePhotoUrls(paths: string[]): Record<string, string> {
+  const key = paths.join('|')
+  const [urls, setUrls] = useState<Record<string, string>>({})
   useEffect(() => {
     let cancelled = false
-    if (!path) {
-      setUrl(null)
-      return
-    }
-    supabase.storage
-      .from(BUCKET)
-      .createSignedUrl(path, 60 * 60)
-      .then(({ data }) => {
-        if (!cancelled) setUrl(data?.signedUrl ?? null)
-      })
+    const list = key ? key.split('|') : []
+    signUrls(list).then(() => {
+      if (cancelled) return
+      const next: Record<string, string> = {}
+      for (const p of list) {
+        const url = cached(p)
+        if (url) next[p] = url
+      }
+      setUrls(next)
+    })
     return () => {
       cancelled = true
     }
-  }, [path])
-  return url
+  }, [key])
+  return urls
+}
+
+export function usePhotoUrl(path: string | null): string | null {
+  const urls = usePhotoUrls(path ? [path] : [])
+  return path ? (urls[path] ?? cached(path)) : null
 }

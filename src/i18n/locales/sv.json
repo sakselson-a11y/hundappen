@@ -119,7 +119,8 @@
     "overview": "Översikt",
     "history": "Historik",
     "family": "Familjen",
-    "schedule": "Schema"
+    "schedule": "Schema",
+    "photos": "Bilder"
   },
   "overview": {
     "logWalk": "Rastning",
@@ -318,5 +319,14 @@
     "lengthLabel": "Längd",
     "short": "Kort rastning",
     "long": "Lång promenad"
+  },
+  "photos": {
+    "title": "Bilder",
+    "empty": "Inga bilder än. Lägg till ett foto när du loggar en rastning, så samlas de här.",
+    "loadMore": "Visa äldre bilder",
+    "position": "{{current}} av {{total}}",
+    "previous": "Föregående bild",
+    "next": "Nästa bild",
+    "saveHint": "Tryck länge på bilden för att spara den i Bilder."
   }
 }
