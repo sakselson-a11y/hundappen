@@ -5,8 +5,11 @@ import './index.css'
 import App from './App.tsx'
 import { registerServiceWorker } from './pwa.ts'
 import { captureInviteFromUrl } from './lib/invite.ts'
+import { captureLogRequestFromUrl, listenForNotificationClicks } from './lib/deepLink.ts'
 
 captureInviteFromUrl()
+captureLogRequestFromUrl()
+listenForNotificationClicks()
 registerServiceWorker()
 
 createRoot(document.getElementById('root')!).render(

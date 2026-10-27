@@ -47,6 +47,8 @@ self.addEventListener('notificationclick', (event) => {
       const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
       const existing = windows.find((w) => w.url.startsWith(self.registration.scope))
       if (existing) {
+        // Appen är redan öppen: be den visa rätt sak (t.ex. loggformuläret från en påminnelse).
+        existing.postMessage({ type: 'notification-click', url })
         await existing.focus()
         return
       }

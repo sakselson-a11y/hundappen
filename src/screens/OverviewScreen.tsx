@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useEvents } from '../household/EventsProvider.tsx'
 import { useHousehold } from '../household/HouseholdProvider.tsx'
@@ -7,7 +7,8 @@ import DogCard from '../components/DogCard.tsx'
 import LogSheet from '../components/LogSheet.tsx'
 import NotificationsCard from '../components/NotificationsCard.tsx'
 import TodayCard from '../components/TodayCard.tsx'
-import type { Dog, DogEvent, EventType } from '../lib/types.ts'
+import type { Dog, DogEvent, EventType, WalkLength } from '../lib/types.ts'
+import type { LogRequest } from '../lib/deepLink.ts'
 
 function LatestRow({ label, event }: { label: string; event: DogEvent | undefined }) {
   const { t, i18n } = useTranslation()
@@ -40,15 +41,27 @@ export default function OverviewScreen({
   dog,
   onEditDog,
   onOpenSchedule,
+  logRequest,
+  onLogRequestHandled,
 }: {
   dog: Dog
   onEditDog: () => void
   onOpenSchedule: () => void
+  logRequest: LogRequest | null
+  onLogRequestHandled: () => void
 }) {
   const { t } = useTranslation()
   const { events, loading } = useEvents()
   const [logging, setLogging] = useState<EventType | null>(null)
   const [queuedNotice, setQueuedNotice] = useState(false)
+  const [presetLength, setPresetLength] = useState<WalkLength | undefined>(undefined)
+
+  useEffect(() => {
+    if (!logRequest) return
+    setPresetLength(logRequest.length)
+    setLogging(logRequest.type)
+    onLogRequestHandled()
+  }, [logRequest, onLogRequestHandled])
   const lastWalk = events.find((e) => e.type === 'walk' && e.dog_id === dog.id)
   const lastMeal = events.find((e) => e.type === 'meal' && e.dog_id === dog.id)
 
@@ -92,7 +105,11 @@ export default function OverviewScreen({
         <LogSheet
           dog={dog}
           type={logging}
-          onClose={() => setLogging(null)}
+          initialLength={presetLength}
+          onClose={() => {
+            setLogging(null)
+            setPresetLength(undefined)
+          }}
           onQueued={() => {
             setQueuedNotice(true)
             setTimeout(() => setQueuedNotice(false), 5000)

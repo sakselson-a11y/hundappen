@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHousehold } from '../household/HouseholdProvider.tsx'
 import { EventsProvider } from '../household/EventsProvider.tsx'
@@ -6,6 +6,7 @@ import { SchedulesProvider } from '../household/SchedulesProvider.tsx'
 import ScheduleScreen from './ScheduleScreen.tsx'
 import PhotosScreen from './PhotosScreen.tsx'
 import TabBar, { type Tab } from '../components/TabBar.tsx'
+import { subscribeLogRequests, type LogRequest } from '../lib/deepLink.ts'
 import CreateDogScreen from './CreateDogScreen.tsx'
 import EditDogScreen from './EditDogScreen.tsx'
 import OverviewScreen from './OverviewScreen.tsx'
@@ -17,6 +18,18 @@ export default function HomeScreen() {
   const { loading, error, household, dogs, reload } = useHousehold()
   const [tab, setTab] = useState<Tab>('overview')
   const [editing, setEditing] = useState(false)
+  const [logRequest, setLogRequest] = useState<LogRequest | null>(null)
+
+  // Tryck på en påminnelse: visa översikten med loggformuläret öppet.
+  useEffect(
+    () =>
+      subscribeLogRequests((request) => {
+        setEditing(false)
+        setTab('overview')
+        setLogRequest(request)
+      }),
+    [],
+  )
 
   if (loading) return <p className="muted center">{t('common.loading')}</p>
   if (error)
@@ -45,7 +58,13 @@ export default function HomeScreen() {
       <SchedulesProvider>
         <div className="with-tabbar">
           {tab === 'overview' && (
-            <OverviewScreen dog={dog} onEditDog={() => setEditing(true)} onOpenSchedule={() => changeTab('schedule')} />
+            <OverviewScreen
+              dog={dog}
+              onEditDog={() => setEditing(true)}
+              onOpenSchedule={() => changeTab('schedule')}
+              logRequest={logRequest}
+              onLogRequestHandled={() => setLogRequest(null)}
+            />
           )}
           {tab === 'history' && <HistoryScreen />}
           {tab === 'photos' && <PhotosScreen />}

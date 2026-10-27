@@ -55,7 +55,8 @@ Deno.serve(async (req) => {
         title,
         body,
         tag: `reminder-${r.schedule_id}-${r.occurrence_at}`,
-        url: '/',
+        // Öppnar loggformuläret med rätt sak förvald.
+        url: r.type === 'walk' ? `/?log=walk&length=${r.walk_length ?? 'short'}` : '/?log=meal',
       })
       sent += result.sent
     }
