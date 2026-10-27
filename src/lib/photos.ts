@@ -31,9 +31,14 @@ export async function uploadDogPhoto(householdId: string, dogId: string, image: 
   return path
 }
 
+// Ny sökväg för varje foto, så att ett utbytt foto aldrig visas från en gammal adress.
+export function eventPhotoPath(householdId: string, eventId: string): string {
+  return `${householdId}/events/${eventId}-${crypto.randomUUID().slice(0, 8)}.jpg`
+}
+
 export async function uploadEventPhoto(householdId: string, eventId: string, image: Blob): Promise<string> {
-  const path = `${householdId}/events/${eventId}.jpg`
-  const { error } = await supabase.storage.from(BUCKET).upload(path, image, { contentType: 'image/jpeg', upsert: true })
+  const path = eventPhotoPath(householdId, eventId)
+  const { error } = await supabase.storage.from(BUCKET).upload(path, image, { contentType: 'image/jpeg' })
   if (error) throw error
   return path
 }

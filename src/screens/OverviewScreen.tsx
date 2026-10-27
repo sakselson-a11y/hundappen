@@ -48,6 +48,7 @@ export default function OverviewScreen({
   const { t } = useTranslation()
   const { events, loading } = useEvents()
   const [logging, setLogging] = useState<EventType | null>(null)
+  const [queuedNotice, setQueuedNotice] = useState(false)
   const lastWalk = events.find((e) => e.type === 'walk' && e.dog_id === dog.id)
   const lastMeal = events.find((e) => e.type === 'meal' && e.dog_id === dog.id)
 
@@ -81,7 +82,23 @@ export default function OverviewScreen({
 
       <NotificationsCard />
 
-      {logging && <LogSheet dog={dog} type={logging} onClose={() => setLogging(null)} />}
+      {queuedNotice && (
+        <div className="toast" role="status">
+          ⏳ {t('log.queued')}
+        </div>
+      )}
+
+      {logging && (
+        <LogSheet
+          dog={dog}
+          type={logging}
+          onClose={() => setLogging(null)}
+          onQueued={() => {
+            setQueuedNotice(true)
+            setTimeout(() => setQueuedNotice(false), 5000)
+          }}
+        />
+      )}
     </>
   )
 }

@@ -356,3 +356,16 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 .viewer-nav { display: grid; grid-template-columns: 64px 1fr 64px; align-items: center; text-align: center; }
 .viewer-nav button { font-size: 28px; line-height: 1; padding: 8px 0; }
 .tabbar button { max-width: 112px; padding-left: 2px; padding-right: 2px; }
+
+/* Varning, kvitto och väntande loggar */
+.warning-box {
+  background: var(--accent); color: var(--on-accent); border: 2px solid var(--ink);
+  border-radius: 12px; padding: 10px 12px; font-weight: 600;
+}
+.toast {
+  position: fixed; left: 16px; right: 16px; bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 15;
+  max-width: 528px; margin: 0 auto; background: var(--ink); color: var(--bg);
+  border-radius: 14px; padding: 12px 14px; font-weight: 600; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+.tag.pending { background: var(--accent); color: var(--on-accent); }
+.event-actions { display: flex; gap: 16px; }

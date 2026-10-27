@@ -140,7 +140,13 @@
     "changeTime": "ändra tid",
     "when": "När",
     "futureTime": "Tiden kan inte vara i framtiden.",
-    "photoFailed": "Fotot kunde inte laddas upp. Försök igen eller ta bort fotot."
+    "photoFailed": "Fotot kunde inte laddas upp. Försök igen eller ta bort fotot.",
+    "editTitle": "Ändra logg",
+    "editNeedsNetwork": "Ingen anslutning. Ändringar kan bara sparas när du har nät.",
+    "recentWarning": "{{name}} loggade {{what}} {{when}}.",
+    "you": "Du",
+    "saveAnyway": "Logga ändå",
+    "queued": "Ingen täckning – loggen är sparad i telefonen och skickas när nätet är tillbaka."
   },
   "history": {
     "title": "Historik",
@@ -151,7 +157,9 @@
     "delete": "Ta bort",
     "confirmDelete": "Ta bort den här loggen?",
     "showPhoto": "Visa foto",
-    "loadMore": "Visa äldre"
+    "loadMore": "Visa äldre",
+    "pending": "Väntar på nät",
+    "confirmDeletePending": "Ta bort loggen? Den har inte skickats än."
   },
   "time": {
     "today": "Idag",

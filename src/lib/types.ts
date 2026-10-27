@@ -57,6 +57,8 @@ export interface DogEvent {
   note: string | null
   photo_path: string | null
   created_at: string
+  // Sparad i telefonen, väntar på nät (finns inte i databasen än).
+  pending?: boolean
 }
 
 export interface Schedule {

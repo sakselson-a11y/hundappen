@@ -8,11 +8,13 @@ import type { DogEvent } from '../lib/types.ts'
 
 interface Props {
   event: DogEvent
-  canDelete: boolean
+  // Egen logg: kan ändras och tas bort.
+  isOwn: boolean
+  onEdit: (event: DogEvent) => void
   onDelete: (event: DogEvent) => void
 }
 
-export default function EventItem({ event, canDelete, onDelete }: Props) {
+export default function EventItem({ event, isOwn, onEdit, onDelete }: Props) {
   const { t, i18n } = useTranslation()
   const { memberName } = useHousehold()
   const photoUrl = usePhotoUrl(event.photo_path)
@@ -29,18 +31,26 @@ export default function EventItem({ event, canDelete, onDelete }: Props) {
           <strong>{formatTime(event.occurred_at, i18n.language)}</strong>
           <span>{event.type === 'walk' ? t('history.walkBy', { name: who }) : t('history.mealBy', { name: who })}</span>
         </div>
-        {(event.walk_length || event.pee || event.poop) && (
+        {(event.pending || event.walk_length || event.pee || event.poop) && (
           <div className="tags">
+            {event.pending && <span className="tag pending">⏳ {t('history.pending')}</span>}
             {event.walk_length && <span className="tag">{t(`walk.${event.walk_length}`)}</span>}
             {event.pee && <span className="tag">💧 {t('log.pee')}</span>}
             {event.poop && <span className="tag">💩 {t('log.poop')}</span>}
           </div>
         )}
         {event.note && <p className="event-note">{event.note}</p>}
-        {canDelete && (
-          <button className="link danger small" onClick={() => onDelete(event)}>
-            {t('history.delete')}
-          </button>
+        {isOwn && (
+          <span className="event-actions">
+            {!event.pending && (
+              <button className="link small" onClick={() => onEdit(event)}>
+                {t('common.edit')}
+              </button>
+            )}
+            <button className="link danger small" onClick={() => onDelete(event)}>
+              {t('history.delete')}
+            </button>
+          </span>
         )}
       </div>
       {photoUrl && (
