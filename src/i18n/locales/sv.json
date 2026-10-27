@@ -327,6 +327,11 @@
     "position": "{{current}} av {{total}}",
     "previous": "Föregående bild",
     "next": "Nästa bild",
-    "saveHint": "Tryck länge på bilden för att spara den i Bilder."
+    "saveHint": "Tryck länge på bilden för att spara den i Bilder.",
+    "profileTitle": "{{dog}}",
+    "profileCaption": "{{dog}}s profilbild",
+    "delete": "Ta bort bilden",
+    "confirmDelete": "Ta bort bilden? Loggen finns kvar i historiken.",
+    "confirmDeleteProfile": "Ta bort {{dog}}s profilbild?"
   }
 }
