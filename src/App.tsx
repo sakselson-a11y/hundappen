@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { isIOS, isStandalone } from './pwa.ts'
 import InstallGuideScreen from './screens/InstallGuideScreen.tsx'
+import WeatherBadge from './components/WeatherBadge.tsx'
 import { AuthProvider, useAuth } from './auth/AuthProvider.tsx'
 import LoginScreen from './screens/LoginScreen.tsx'
 import NameScreen from './screens/NameScreen.tsx'
@@ -42,15 +43,24 @@ function Content() {
   )
 }
 
-export default function App() {
+function Header() {
   const { t } = useTranslation()
+  const { session, profile } = useAuth()
+  return (
+    <header className="app-header">
+      <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={36} height={36} />
+      <h1>{t('app.name')}</h1>
+      {/* Väder visas bara för inloggade (frågar om platsåtkomst först när man trycker). */}
+      {session && profile?.display_name && <WeatherBadge />}
+    </header>
+  )
+}
+
+export default function App() {
   return (
     <main className="page">
-      <header className="app-header">
-        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" width={36} height={36} />
-        <h1>{t('app.name')}</h1>
-      </header>
       <AuthProvider>
+        <Header />
         <Content />
       </AuthProvider>
     </main>

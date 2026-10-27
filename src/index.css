@@ -375,3 +375,13 @@ img.step-icon { padding: 0; border: 2px solid var(--ink); }
 }
 .tag.sitter { background: var(--accent); color: var(--on-accent); }
 .inline-field { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 15px; }
+
+/* Väder i sidhuvudet */
+.weather-badge {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 4px;
+  background: var(--surface); color: var(--text); border: 2px solid var(--ink); border-radius: 999px;
+  padding: 4px 12px; font-family: var(--font-display); font-weight: 800; font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+.weather-badge.off { font-family: inherit; font-weight: 600; font-size: 15px; color: var(--muted); border-style: dashed; }
+.weather-badge.loading { opacity: 0.6; }
